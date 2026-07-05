@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyProfPlan | Édition Réseau SaaS</title>
+    <title>MyProfPlan | Poste d'Adaptation</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         /* =========================================
-           DESIGN SYSTEM (SaaS Premium)
+           DESIGN SYSTEM (SaaS Premium Compact)
         ========================================= */
         :root { 
             --bg-app: #f8fafc; 
@@ -34,7 +34,7 @@
         
         /* --- MENU LATÉRAL --- */
         .sidebar { 
-            width: 260px; 
+            width: 280px; 
             background-color: var(--bg-surface); 
             border-right: 1px solid var(--border); 
             padding: 24px 16px; 
@@ -93,6 +93,7 @@
             display: flex; 
             justify-content: space-between; 
             align-items: flex-end;
+            max-width: 900px;
         }
         .header h1 { 
             font-size: 2.2rem; 
@@ -106,7 +107,7 @@
             font-size: 1rem; 
         }
         
-        /* --- PANNEAUX ET CARTES --- */
+        /* --- PANNEAUX ET CARTES (Plus compacts pour éviter l'éparpillement) --- */
         .card { 
             background: var(--bg-surface); 
             border: 1px solid var(--border); 
@@ -114,7 +115,7 @@
             padding: 30px; 
             box-shadow: 0 1px 3px rgba(0,0,0,0.02); 
             margin-bottom: 30px; 
-            max-width: 1000px; 
+            max-width: 900px; /* Réduit pour regrouper les champs */
             box-sizing: border-box;
         }
         .card-header { 
@@ -165,88 +166,6 @@
             box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
         }
         
-        /* --- SÉLECTEUR DE COULEURS --- */
-        .color-palette { 
-            display: flex; 
-            gap: 12px; 
-            flex-wrap: wrap; 
-            margin-top: 5px;
-        }
-        .color-swatch { 
-            width: 32px; 
-            height: 32px; 
-            border-radius: 50%; 
-            cursor: pointer; 
-            border: 2px solid transparent; 
-            transition: 0.2s; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .color-swatch:hover { 
-            transform: scale(1.1); 
-        }
-        .color-swatch.active { 
-            transform: scale(1.1); 
-            box-shadow: 0 0 0 2px var(--bg-surface), 0 0 0 4px var(--primary); 
-        }
-        
-        /* --- SÉLECTION DES JOURS ET HEURES --- */
-        .week-planner { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 10px; 
-            margin-top: 20px; 
-            background: #f8fafc; 
-            padding: 20px; 
-            border-radius: 12px; 
-            border: 1px solid var(--border);
-        }
-        .week-planner-title { 
-            font-weight: 700; 
-            font-size: 0.95rem; 
-            margin-bottom: 10px; 
-            color: var(--primary);
-        }
-        .day-row { 
-            display: flex; 
-            align-items: center; 
-            gap: 15px; 
-            background: white; 
-            padding: 12px 15px; 
-            border: 1px solid var(--border); 
-            border-radius: 8px; 
-            transition: 0.2s;
-        }
-        .day-row:hover { 
-            border-color: #cbd5e1; 
-        }
-        .day-row input[type="checkbox"] { 
-            width: 18px; 
-            height: 18px; 
-            accent-color: var(--accent); 
-            cursor: pointer; 
-        }
-        .day-label { 
-            width: 90px; 
-            font-weight: 600; 
-            cursor: pointer; 
-            color: var(--primary);
-        }
-        .time-inputs { 
-            display: flex; 
-            gap: 10px; 
-            flex: 1; 
-            align-items: center; 
-        }
-        .time-inputs input { 
-            width: 120px; 
-            padding: 8px 12px;
-        }
-        .time-sep { 
-            color: var(--text-muted); 
-            font-size: 0.9rem; 
-            font-weight: 500;
-        }
-
         /* --- BOUTONS --- */
         .btn { 
             background-color: var(--primary); 
@@ -263,142 +182,32 @@
             justify-content: center; 
             gap: 8px;
         }
-        .btn:hover { 
-            background-color: var(--primary-hover); 
-            transform: translateY(-1px);
-        }
-        .btn-outline { 
-            background-color: transparent; 
-            color: var(--primary); 
-            border: 1px solid var(--border); 
-            box-shadow: none;
-        }
-        .btn-outline:hover { 
-            background-color: var(--bg-app); 
-            transform: none;
-        }
-        .btn-pdf { 
-            background-color: #ef4444; 
-            color: white; 
-            border: none; 
-            padding: 12px 24px; 
-            border-radius: 8px; 
-            font-size: 0.95rem; 
-            font-weight: 600; 
-            cursor: pointer;
-        }
-        .btn-pdf:hover { 
-            background-color: #dc2626; 
-        }
-        .btn-edit, .btn-danger { 
-            padding: 8px 16px; 
-            font-size: 0.85rem; 
-            border-radius: 6px; 
-            cursor: pointer; 
-            font-weight: 600; 
-            border: 1px solid transparent;
-        }
-        .btn-edit { 
-            background-color: #f1f5f9; 
-            color: #475569; 
-            border-color: #cbd5e1;
-        }
-        .btn-edit:hover { 
-            background-color: #e2e8f0; 
-        }
-        .btn-danger { 
-            background-color: #fef2f2; 
-            color: var(--danger); 
-            border-color: #fecaca;
-        }
-        .btn-danger:hover { 
-            background-color: #fee2e2; 
-        }
-        .actions { 
-            margin-top: 24px; 
-            display: flex; 
-            justify-content: flex-end; 
-            gap: 12px;
-        }
+        .btn:hover { background-color: var(--primary-hover); transform: translateY(-1px); }
+        .btn-outline { background-color: transparent; color: var(--primary); border: 1px solid var(--border); box-shadow: none;}
+        .btn-outline:hover { background-color: var(--bg-app); transform: none;}
+        .btn-pdf { background-color: #ef4444; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer;}
+        .btn-pdf:hover { background-color: #dc2626; }
+        .btn-danger { padding: 8px 16px; font-size: 0.85rem; border-radius: 6px; cursor: pointer; font-weight: 600; border: 1px solid transparent; background-color: #fef2f2; color: var(--danger); border-color: #fecaca;}
+        .btn-danger:hover { background-color: #fee2e2; }
+        .actions { margin-top: 24px; display: flex; justify-content: flex-end; gap: 12px;}
         
         /* --- LISTES DE DONNÉES --- */
-        .data-list { 
-            list-style: none; 
-            padding: 0; 
-            margin: 0; 
-        }
-        .data-item { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            padding: 16px 0; 
-            border-bottom: 1px solid var(--border); 
-        }
-        .data-item:last-child { 
-            border-bottom: none; 
-            padding-bottom: 0;
-        }
-        .data-item:first-child { 
-            padding-top: 0;
-        }
-        .p-tag { 
-            font-size: 0.7rem; 
-            font-weight: 800; 
-            text-transform: uppercase; 
-            border-radius: 4px; 
-            padding: 2px 4px; 
-            background: rgba(0,0,0,0.1); 
-            flex-shrink: 0; 
-            display: inline-block; 
-            margin-bottom: 4px;
-            margin-right: 6px;
-        }
+        .data-list { list-style: none; padding: 0; margin: 0; }
+        .data-item { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--border); }
+        .data-item:last-child { border-bottom: none; padding-bottom: 0;}
+        .data-item:first-child { padding-top: 0;}
+        .p-tag { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; border-radius: 4px; padding: 2px 4px; background: rgba(0,0,0,0.1); flex-shrink: 0; display: inline-block; margin-bottom: 4px; margin-right: 6px;}
         
         /* --- AFFICHAGE DES PAGES --- */
-        .page { 
-            display: none; 
-        }
-        .page.active { 
-            display: block; 
-        }
+        .page { display: none; }
+        .page.active { display: block; }
 
         /* --- SÉLECTEUR DE THÈMES MODERNE --- */
-        .theme-grid { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 15px; 
-            margin-bottom: 30px; 
-        }
-        .theme-card { 
-            border: 2px solid var(--border); 
-            border-radius: 12px; 
-            padding: 15px; 
-            cursor: pointer; 
-            transition: 0.2s; 
-            background: white; 
-            position: relative;
-        }
-        .theme-card:hover { 
-            border-color: #cbd5e1; 
-            transform: translateY(-2px);
-        }
-        .theme-card.active { 
-            border-color: var(--accent); 
-            box-shadow: 0 4px 12px rgba(59,130,246,0.15);
-        }
-        .theme-card.active::after { 
-            content: ""; 
-            position: absolute; 
-            top: 10px; 
-            right: 10px; 
-            background: var(--accent); 
-            width: 12px; 
-            height: 12px; 
-            border-radius: 50%; 
-            display: block;
-        }
-        
-        /* MINIATURES DES THÈMES */
+        .theme-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px; }
+        .theme-card { border: 2px solid var(--border); border-radius: 12px; padding: 15px; cursor: pointer; transition: 0.2s; background: white; position: relative;}
+        .theme-card:hover { border-color: #cbd5e1; transform: translateY(-2px);}
+        .theme-card.active { border-color: var(--accent); box-shadow: 0 4px 12px rgba(59,130,246,0.15);}
+        .theme-card.active::after { content: ""; position: absolute; top: 10px; right: 10px; background: var(--accent); width: 12px; height: 12px; border-radius: 50%; display: block;}
         .mini-preview { width: 100%; height: 80px; background: #f8fafc; border-radius: 6px; margin-bottom: 15px; border: 1px solid var(--border); overflow: hidden; display: flex; padding: 5px; box-sizing: border-box; gap: 4px;}
         .theme-info h3 { margin: 0 0 4px 0; font-size: 0.95rem; font-weight: 800; color: var(--primary);}
         .theme-info p { margin: 0; font-size: 0.8rem; color: var(--text-muted);}
@@ -420,41 +229,13 @@
         .mini-timeline .bar { position: absolute; height: 80%; top: 10%; background: #8b5cf6; border-radius: 2px;}
 
         /* --- BILAN FINANCIER --- */
-        .bilan-box { 
-            background: #f0fdf4; 
-            border: 1px solid #bbf7d0; 
-            padding: 25px; 
-            border-radius: 8px; 
-            margin-bottom: 25px;
-        }
-        .bilan-title { 
-            color: #166534; 
-            font-weight: 800; 
-            font-size: 1.1rem; 
-            margin-bottom: 10px;
-        }
-        .bilan-amount { 
-            font-size: 2.5rem; 
-            font-weight: 900; 
-            color: #15803d; 
-            margin-bottom: 5px;
-        }
-        .bilan-details { 
-            color: #166534; 
-            font-weight: 500; 
-            font-size: 0.95rem;
-        }
+        .bilan-box { background: #f0fdf4; border: 1px solid #bbf7d0; padding: 25px; border-radius: 8px; margin-bottom: 25px; max-width: 900px;}
+        .bilan-title { color: #166534; font-weight: 800; font-size: 1.1rem; margin-bottom: 10px;}
+        .bilan-amount { font-size: 2.5rem; font-weight: 900; color: #15803d; margin-bottom: 5px;}
+        .bilan-details { color: #166534; font-weight: 500; font-size: 0.95rem;}
 
-        /* =========================================
-           STYLES DES PLANNINGS RÉELS (Générés)
-        ========================================= */
-        .planning-scroll-area { 
-            width: 100%; 
-            overflow-x: auto; 
-            padding-bottom: 15px; 
-        }
-        
-        /* Thème 1 : Agenda */
+        /* --- STYLES DES PLANNINGS RÉELS (Générés) --- */
+        .planning-scroll-area { width: 100%; overflow-x: auto; padding-bottom: 15px; }
         .ag-wrap { border: 1px solid var(--border); border-radius: 12px; background: white; display: flex; flex-direction: column; overflow: hidden; min-width: 800px;}
         .ag-head { display: flex; border-bottom: 1px solid var(--border); padding-left: 50px; }
         .ag-day { flex: 1; text-align: center; padding: 15px; font-weight: 700; color: var(--primary); border-right: 1px solid var(--border); }
@@ -464,27 +245,19 @@
         .ag-col { flex: 1; position: relative; border-right: 1px solid var(--border); }
         .ag-line { position: absolute; width: 100%; height: 1px; background: #f1f5f9; left: 0; }
         .ag-block { position: absolute; left: 4px; right: 4px; border-radius: 6px; padding: 6px 10px; box-sizing: border-box; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);}
-        
-        /* Thème 2 : Kanban */
         .kb-wrap { display: flex; gap: 15px; align-items: flex-start; }
         .kb-col { flex: 1; background: #f8fafc; border-radius: 12px; padding: 12px; min-height: 400px; border: 1px solid var(--border); }
         .kb-head { font-weight: 800; text-align: center; padding-bottom: 12px; border-bottom: 2px solid var(--border); margin-bottom: 12px; }
         .kb-card { background: white; border-radius: 8px; padding: 12px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--border); }
-
-        /* Thème 3 : Liste */
         .li-wrap { background: white; border-radius: 12px; border: 1px solid var(--border); padding: 30px;}
         .li-group { margin-bottom: 30px; }
         .li-title { font-size: 1.2rem; font-weight: 800; border-bottom: 2px solid var(--border); padding-bottom: 8px; margin-bottom: 12px;}
         .li-row { display: flex; align-items: center; padding: 12px; border-radius: 8px; margin-bottom: 4px; background: #f8fafc;}
         .li-dot { width: 10px; height: 10px; border-radius: 3px; margin-right: 15px; }
-
-        /* Thème 4 : Aesthetic */
         .aes-wrap { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
         .aes-col { display: flex; flex-direction: column; gap: 15px; }
         .aes-head { font-size: 1.1rem; font-weight: 900; text-align: center; color: var(--primary); margin-bottom: 10px;}
         .aes-blob { border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); transition: 0.2s;}
-        
-        /* Thème 5 : Timeline */
         .tl-wrap { background: white; border-radius: 12px; border: 1px solid var(--border); overflow: hidden; min-width: 800px;}
         .tl-row { display: flex; border-bottom: 1px solid var(--border); min-height: 80px;}
         .tl-day { width: 100px; padding: 20px; font-weight: 800; background: #f8fafc; border-right: 1px solid var(--border); display: flex; align-items: center; justify-content: center;}
@@ -492,11 +265,10 @@
         .tl-grid { position: absolute; height: 100%; width: 1px; background: #f1f5f9; top: 0;}
         .tl-bar { position: absolute; border-radius: 6px; padding: 8px 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); overflow: hidden; white-space: nowrap;}
         
-        /* Textes intérieurs (Communs aux thèmes) */
         .p-time { font-size: 0.75rem; font-weight: 800; opacity: 0.8;}
         .p-tit { font-size: 0.9rem; font-weight: 700; line-height: 1.2; margin: 4px 0; display:flex; align-items:flex-start; flex-direction: column;}
         
-        /* La Matrice (Tableau de soustraction) */
+        /* La Matrice */
         .doc-table { width: 100%; border-collapse: collapse; background: #fff; font-size: 0.9rem; margin-top: 10px; border: 1px solid #cbd5e1;}
         .doc-table th, .doc-table td { border: 1px solid #cbd5e1; padding: 12px; text-align: center; vertical-align: top; }
         .doc-table th { background: #f8fafc; font-weight: 700; color: #334155; }
@@ -507,46 +279,56 @@
         .toast { position: fixed; bottom: 30px; right: 30px; background-color: var(--primary); color: white; padding: 16px 32px; border-radius: 8px; font-weight: 600; opacity: 0; transform: translateY(20px); transition: 0.3s; z-index: 999; box-shadow: 0 4px 6px rgba(0,0,0,0.1);}
         .toast.show { opacity: 1; transform: translateY(0); }
 
+        /* Couleurs d'écoles dans la gestion des écoles */
+        .color-palette { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 5px;}
+        .color-swatch { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.1);}
+        .color-swatch:hover { transform: scale(1.1); }
+        .color-swatch.active { transform: scale(1.1); box-shadow: 0 0 0 2px var(--bg-surface), 0 0 0 4px var(--primary); }
+
     </style>
 </head>
 <body>
 
+    <!-- BARRE DE NAVIGATION (Titres optimisés) -->
     <nav class="sidebar">
         <div class="sidebar-brand"><div class="sidebar-brand-icon"></div> MyProfPlan</div>
         <a class="nav-item active" onclick="naviguer('accueil', this)">Accueil</a>
-        <a class="nav-item" onclick="naviguer('bilan', this)">1. Bilan & Données</a>
-        <a class="nav-item" onclick="naviguer('config', this)">2. Paramétrage Visuel</a>
+        <a class="nav-item" onclick="naviguer('bilan', this)">1. Tableau de bord & Bilan</a>
+        <a class="nav-item" onclick="naviguer('config', this)">2. Format d'Export (PDF)</a>
         <a class="nav-item" onclick="naviguer('ecoles', this)">3. Gestion des Écoles</a>
-        <a class="nav-item" onclick="naviguer('brouillon', this)">4. Saisie Brouillon</a>
-        <a class="nav-item" onclick="naviguer('matrice', this)">5. Matrice (Créneaux)</a>
-        <a class="nav-item" onclick="naviguer('interventions', this)">6. Placer Interventions</a>
-        <a class="nav-item" onclick="naviguer('planning', this)">7. Planning Final</a>
+        <a class="nav-item" onclick="naviguer('brouillon', this)">4. Saisie des Indisponibilités</a>
+        <a class="nav-item" onclick="naviguer('matrice', this)">5. Calculateur de Créneaux</a>
+        <a class="nav-item" onclick="naviguer('interventions', this)">6. Planification des Cours</a>
+        <a class="nav-item" onclick="naviguer('planning', this)">7. Emploi du Temps Final</a>
     </nav>
 
+    <!-- ZONE PRINCIPALE -->
     <main class="main">
         
+        <!-- PAGE : ACCUEIL -->
         <div id="page-accueil" class="page active">
             <div class="hero">
-                <h1>Gagnez du temps sur votre planning réseau.</h1>
-                <p>Le seul outil qui soustrait automatiquement vos contraintes, calcule vos créneaux libres, et génère un emploi du temps visuel avec le calcul de vos indemnités kilométriques.</p>
-                <button class="btn" style="font-size: 1.1rem; padding: 16px 32px;" onclick="document.querySelectorAll('.nav-item')[3].click()">Démarrer la création</button>
+                <h1>L'outil d'adaptation scolaire de référence.</h1>
+                <p>Déclarez les indisponibilités de vos écoles et vos temps de trajet. Le logiciel calcule instantanément vos créneaux libres et votre bilan kilométrique.</p>
+                <button class="btn" style="font-size: 1.1rem; padding: 16px 32px;" onclick="document.querySelectorAll('.nav-item')[3].click()">Commencer la configuration</button>
             </div>
         </div>
 
+        <!-- PAGE 1 : BILAN & DONNÉES -->
         <div id="page-bilan" class="page">
             <div class="header">
-                <div><h1>Bilan & Données</h1><p>Gérez le barème kilométrique et consultez votre total.</p></div>
+                <div><h1>Tableau de bord & Bilan</h1><p>Suivez vos déplacements et configurez vos indemnités.</p></div>
             </div>
             
             <div class="bilan-box">
-                <div class="bilan-title">Indemnités kilométriques estimées</div>
+                <div class="bilan-title">Indemnités kilométriques générées</div>
                 <div class="bilan-amount" id="affichage-total-frais">0.00 €</div>
-                <div class="bilan-details" id="affichage-total-km">0 km de trajets enregistrés sur la semaine</div>
+                <div class="bilan-details" id="affichage-total-km">0 km de trajets enregistrés cette semaine</div>
             </div>
 
             <div class="card">
                 <h2 class="card-header">Barème de remboursement</h2>
-                <div class="card-desc">Indiquez le tarif remboursé par l'institution par kilomètre.</div>
+                <div class="card-desc">Indiquez le tarif remboursé par votre académie par kilomètre.</div>
                 <div class="form-row">
                     <div class="form-group">
                         <label>Tarif par kilomètre (€)</label>
@@ -556,14 +338,15 @@
             </div>
         </div>
 
+        <!-- PAGE 2 : FORMAT D'EXPORT -->
         <div id="page-config" class="page">
             <div class="header">
-                <div><h1>Paramétrage Visuel</h1><p>Choisissez à quoi ressemblera votre Planning Final.</p></div>
+                <div><h1>Format d'Export</h1><p>Choisissez la structure visuelle de votre document final.</p></div>
             </div>
 
             <div class="card">
-                <h2 class="card-header">Modèle d'affichage (Thème)</h2>
-                <div class="card-desc">C'est ce design qui sera utilisé pour exporter votre semaine.</div>
+                <h2 class="card-header">Modèle PDF</h2>
+                <div class="card-desc">Sélectionnez le style qui correspond le mieux à votre organisation.</div>
                 
                 <div class="theme-grid">
                     <div class="theme-card active" id="theme-agenda" onclick="choisirTheme('agenda')">
@@ -590,19 +373,22 @@
             </div>
         </div>
 
+        <!-- PAGE 3 : GESTION DES ECOLES -->
         <div id="page-ecoles" class="page">
             <div class="header">
-                <div><h1>Gestion des Écoles</h1><p>Les établissements de votre réseau de secteur.</p></div>
+                <div><h1>Gestion des Écoles</h1><p>Les établissements qui composent votre réseau d'intervention.</p></div>
             </div>
 
             <div class="card">
-                <h2 class="card-header">Ajouter une école</h2>
+                <h2 class="card-header">Ajouter un établissement</h2>
+                <div class="card-desc">Déclarez une école et attribuez-lui une couleur pour la repérer facilement sur le planning.</div>
+                
                 <div class="form-row">
-                    <div class="form-group">
+                    <div class="form-group" style="flex: 2;">
                         <label>Nom de l'établissement</label>
                         <input type="text" id="nomLieu" placeholder="Ex: École Ste Thérèse">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="flex: 1;">
                         <label>Secteur / Ville</label>
                         <input type="text" id="secteurLieu" placeholder="Ex: Augan">
                     </div>
@@ -628,34 +414,36 @@
             </div>
 
             <div class="card">
-                <h2 class="card-header">Écoles enregistrées</h2>
+                <h2 class="card-header">Réseau actuel</h2>
                 <ul class="data-list" id="liste-lieux"></ul>
             </div>
         </div>
 
+        <!-- PAGE 4 : SAISIE BROUILLON (INDISPOS) - RÉORGANISÉE ET COMPACTE -->
         <div id="page-brouillon" class="page">
             <div class="header">
-                <div><h1>Saisie du Brouillon</h1><p>Déclarez les heures de sport, de piscine, ou vos trajets.</p></div>
+                <div><h1>Indisponibilités & Trajets</h1><p>Saisissez les créneaux où les élèves sont en sport, à la piscine, ainsi que vos temps de route.</p></div>
             </div>
 
             <div class="card">
-                <h2 class="card-header">Ajouter un blocage</h2>
+                <h2 class="card-header">Déclarer une nouvelle contrainte</h2>
+                <div class="card-desc">L'algorithme soustraira ces heures de votre emploi du temps pour trouver vos disponibilités.</div>
                 
                 <div class="form-row">
-                    <div class="form-group" style="flex:1;">
-                        <label>Nature du blocage</label>
+                    <div class="form-group" style="flex: 1.5;">
+                        <label>Type de contrainte</label>
                         <select id="typeIndispo" onchange="adapterFormulaireIndispo()">
-                            <option value="indispo">Indisponibilité d'une école</option>
+                            <option value="indispo">Indisponibilité de la classe</option>
                             <option value="trajet">Temps de trajet personnel</option>
-                            <option value="pause">Pause repas</option>
+                            <option value="pause">Pause repas / Récréation</option>
                         </select>
                     </div>
-                    <div class="form-group" id="boxEcoleIndispo">
-                        <label>École bloquée</label>
+                    <div class="form-group" id="boxEcoleIndispo" style="flex: 2;">
+                        <label>Établissement concerné</label>
                         <select id="ecoleIndispo"></select>
                     </div>
-                    <div class="form-group">
-                        <label>Jour de la semaine</label>
+                    <div class="form-group" style="flex: 1;">
+                        <label>Jour</label>
                         <select id="jourIndispo">
                             <option value="Lundi">Lundi</option>
                             <option value="Mardi">Mardi</option>
@@ -666,60 +454,62 @@
                 </div>
 
                 <div class="form-row">
-                    <div class="form-group" style="flex:2;">
-                        <label>Motif détaillé</label>
-                        <input type="text" id="motifIndispo" placeholder="Ex: Piscine CP">
+                    <div class="form-group" style="flex: 2;">
+                        <label>Motif (ex: Piscine, Orthophoniste...)</label>
+                        <input type="text" id="motifIndispo" placeholder="Détail du blocage">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="flex: 1;">
                         <label>De (Heure)</label>
                         <input type="time" id="debutIndispo" value="09:00">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="flex: 1;">
                         <label>À (Heure)</label>
                         <input type="time" id="finIndispo" value="10:00">
                     </div>
                     <div class="form-group" id="boxDistance" style="display:none; flex: 1;">
-                        <label>Distance effectuée</label>
-                        <input type="number" id="distanceIndispo" placeholder="en km" step="0.1" min="0">
+                        <label>Distance (km)</label>
+                        <input type="number" id="distanceIndispo" placeholder="Ex: 15" step="0.1" min="0">
                     </div>
                 </div>
 
                 <div class="actions">
-                    <button class="btn" onclick="ajouterIndispo()">Enregistrer au brouillon</button>
+                    <button class="btn" onclick="ajouterIndispo()">Enregistrer la contrainte</button>
                 </div>
             </div>
 
             <div class="card">
-                <h2 class="card-header">Blocages et trajets actuels</h2>
+                <h2 class="card-header">Liste des contraintes enregistrées</h2>
                 <ul class="data-list" id="liste-indispos"></ul>
             </div>
         </div>
 
+        <!-- PAGE 5 : MATRICE (CALCULATEUR DE CRÉNEAUX) -->
         <div id="page-matrice" class="page">
             <div class="header">
-                <div><h1>La Matrice</h1><p>Voici les créneaux libres calculés automatiquement.</p></div>
+                <div><h1>Calculateur de Créneaux Libres</h1><p>Résultat du croisement entre les horaires d'école normaux et vos contraintes.</p></div>
             </div>
 
-            <div class="card" style="padding: 0; overflow: hidden; border: none; box-shadow: none; background: transparent;">
+            <div class="card" style="padding: 0; overflow: hidden; border: none; box-shadow: none; background: transparent; max-width: 100%;">
                 <div id="matrice-container"></div>
             </div>
         </div>
 
+        <!-- PAGE 6 : PLACER LES INTERVENTIONS -->
         <div id="page-interventions" class="page">
             <div class="header">
-                <div><h1>Planifier une intervention</h1><p>Maintenant que vous connaissez vos créneaux, placez vos cours.</p></div>
+                <div><h1>Planification des Cours</h1><p>En vous basant sur le calculateur, fixez les heures de vos interventions réelles.</p></div>
             </div>
 
             <div class="card">
-                <h2 class="card-header">Ajouter au planning final</h2>
+                <h2 class="card-header">Créer une intervention</h2>
                 
                 <div class="form-row">
-                    <div class="form-group">
+                    <div class="form-group" style="flex: 2;">
                         <label>École d'intervention</label>
                         <select id="ecoleIntervention"></select>
                     </div>
-                    <div class="form-group">
-                        <label>Jour</label>
+                    <div class="form-group" style="flex: 1;">
+                        <label>Jour d'intervention</label>
                         <select id="jourIntervention">
                             <option value="Lundi">Lundi</option>
                             <option value="Mardi">Mardi</option>
@@ -730,34 +520,35 @@
                 </div>
                 
                 <div class="form-row">
-                    <div class="form-group" style="flex:2;">
-                        <label>Détails / Classes</label>
+                    <div class="form-group" style="flex: 2;">
+                        <label>Détails (Classes, Groupes)</label>
                         <input type="text" id="detailIntervention" placeholder="Ex: AS CP avec N. Ferrand">
                     </div>
-                    <div class="form-group">
-                        <label>Début</label>
+                    <div class="form-group" style="flex: 1;">
+                        <label>Heure de début</label>
                         <input type="time" id="debutIntervention" value="09:00">
                     </div>
-                    <div class="form-group">
-                        <label>Fin</label>
+                    <div class="form-group" style="flex: 1;">
+                        <label>Heure de fin</label>
                         <input type="time" id="finIntervention" value="10:00">
                     </div>
                 </div>
 
                 <div class="actions">
-                    <button class="btn" onclick="ajouterIntervention()">Ajouter au planning</button>
+                    <button class="btn" onclick="ajouterIntervention()">Valider le cours</button>
                 </div>
             </div>
 
             <div class="card">
-                <h2 class="card-header">Interventions prévues</h2>
+                <h2 class="card-header">Interventions planifiées</h2>
                 <ul class="data-list" id="liste-interventions"></ul>
             </div>
         </div>
 
+        <!-- PAGE 7 : PLANNING FINAL -->
         <div id="page-planning" class="page">
             <div class="header">
-                <div><h1>Mon Planning Final</h1><p>Vos interventions appliquées au modèle de votre choix.</p></div>
+                <div><h1>Emploi du Temps Final</h1><p>Vos cours appliqués au modèle d'export sélectionné.</p></div>
                 <div style="display:flex; gap: 15px;">
                     <button class="btn btn-outline" onclick="genererPlanningFinal()">Actualiser l'affichage</button>
                     <button class="btn-pdf" onclick="exporterPDF()">Télécharger en PDF</button>
@@ -773,6 +564,7 @@
 
     </main>
 
+    <!-- NOTIFICATION -->
     <div id="toast" class="toast"></div>
 
     <script>
@@ -789,13 +581,12 @@
 
         const JOURS_TRAVAIL = ['Lundi', 'Mardi', 'Jeudi', 'Vendredi'];
 
-        // Horaires théoriques d'ouverture d'une école (Sert pour la Matrice)
+        // Horaires théoriques d'ouverture d'une école (Sert pour le Calculateur)
         const HORAIRES_ECOLE = [
             { debut: 8 * 60 + 30, fin: 12 * 60 + 0 },
             { debut: 13 * 60 + 30, fin: 16 * 60 + 30 }
         ];
 
-        // Remplir le champ de configuration financier
         if (document.getElementById('ikRate')) {
             document.getElementById('ikRate').value = db.ik_rate;
         }
@@ -811,16 +602,10 @@
         }
 
         function naviguer(idPage, elementMenu) {
-            // Cacher toutes les pages
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            // Afficher la bonne page
             document.getElementById('page-' + idPage).classList.add('active');
-            
-            // Gérer le menu
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             elementMenu.classList.add('active');
-            
-            // Rafraîchir les données systématiquement
             rafraichirToutesLesVues();
         }
 
@@ -846,14 +631,11 @@
         function choisirTheme(nomTheme) {
             db.theme = nomTheme; 
             sauvegarderBaseDeDonnees();
-            
-            // Mise à jour visuelle des bordures
             document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('active'));
             document.getElementById('theme-' + nomTheme).classList.add('active');
-            afficherNotification("Modèle visuel appliqué.");
+            afficherNotification("Modèle d'export appliqué.");
         }
 
-        // Appliquer le thème actif au démarrage
         if(document.getElementById('theme-' + db.theme)) {
             document.getElementById('theme-' + db.theme).classList.add('active');
         }
@@ -884,23 +666,19 @@
             if(!nom) return afficherNotification("Le nom de l'école est obligatoire.");
             
             db.lieux.push({ id: Date.now(), nom: nom, secteur: secteur, couleur: couleur });
-            
-            // Réinitialiser le formulaire
             document.getElementById('nomLieu').value = '';
             document.getElementById('secteurLieu').value = '';
             
             sauvegarderBaseDeDonnees();
-            afficherNotification("École ajoutée.");
+            afficherNotification("École ajoutée avec succès.");
         }
 
         function supprimerLieu(id) {
             db.lieux = db.lieux.filter(x => x.id !== id);
-            // Suppression en cascade
             db.indispos = db.indispos.filter(x => x.ecole_id != id);
             db.interventions = db.interventions.filter(x => x.ecole_id != id);
-            
             sauvegarderBaseDeDonnees();
-            afficherNotification("École et données associées supprimées.");
+            afficherNotification("L'école a été retirée.");
         }
 
         // ==========================================
@@ -931,33 +709,23 @@
             let fin = document.getElementById('finIndispo').value;
             let distance = type === 'trajet' ? (parseFloat(document.getElementById('distanceIndispo').value) || 0) : 0;
 
-            if (!motif || !debut || !fin) return afficherNotification("Veuillez remplir le motif et les horaires.");
-            if (type === 'indispo' && !ecole_id) return afficherNotification("Sélectionnez l'école bloquée.");
-            if (timeToMins(debut) >= timeToMins(fin)) return afficherNotification("L'heure de fin doit être après l'heure de début.");
+            if (!motif || !debut || !fin) return afficherNotification("Veuillez renseigner le motif et les horaires.");
+            if (type === 'indispo' && !ecole_id) return afficherNotification("Sélectionnez l'établissement concerné.");
+            if (timeToMins(debut) >= timeToMins(fin)) return afficherNotification("L'heure de fin doit succéder à l'heure de début.");
 
-            db.indispos.push({ 
-                id: Date.now(), 
-                type: type, 
-                ecole_id: ecole_id, 
-                jour: jour, 
-                motif: motif, 
-                debut: debut, 
-                fin: fin, 
-                distance: distance 
-            });
+            db.indispos.push({ id: Date.now(), type: type, ecole_id: ecole_id, jour: jour, motif: motif, debut: debut, fin: fin, distance: distance });
 
-            // Réinitialiser
             document.getElementById('motifIndispo').value = '';
             document.getElementById('distanceIndispo').value = '';
             
             sauvegarderBaseDeDonnees();
-            afficherNotification("Blocage enregistré au brouillon.");
+            afficherNotification("La contrainte a bien été ajoutée.");
         }
 
         function supprimerIndispo(id) {
             db.indispos = db.indispos.filter(x => x.id !== id);
             sauvegarderBaseDeDonnees();
-            afficherNotification("Blocage supprimé.");
+            afficherNotification("La contrainte a été supprimée.");
         }
 
         // ==========================================
@@ -970,42 +738,32 @@
             let debut = document.getElementById('debutIntervention').value;
             let fin = document.getElementById('finIntervention').value;
 
-            if (!ecole_id || !detail || !debut || !fin) return afficherNotification("Veuillez remplir tous les champs.");
+            if (!ecole_id || !detail || !debut || !fin) return afficherNotification("Tous les champs sont requis pour valider le cours.");
             if (timeToMins(debut) >= timeToMins(fin)) return afficherNotification("Horaires invalides.");
 
-            db.interventions.push({ 
-                id: Date.now(), 
-                ecole_id: ecole_id, 
-                jour: jour, 
-                detail: detail, 
-                debut: debut, 
-                fin: fin 
-            });
+            db.interventions.push({ id: Date.now(), ecole_id: ecole_id, jour: jour, detail: detail, debut: debut, fin: fin });
 
             document.getElementById('detailIntervention').value = '';
             sauvegarderBaseDeDonnees();
-            afficherNotification("Intervention planifiée.");
+            afficherNotification("Votre cours a bien été planifié.");
         }
 
         function supprimerIntervention(id) {
             db.interventions = db.interventions.filter(x => x.id !== id);
             sauvegarderBaseDeDonnees();
-            afficherNotification("Intervention supprimée.");
+            afficherNotification("Le cours a été annulé.");
         }
 
         // ==========================================
         // LE MOTEUR MATHEMATIQUE (Calcul des créneaux)
         // ==========================================
         function calculerDisposEcoleJour(ecole_id, jour) {
-            // 1. On part du postulat que toute la journée est libre
             let blocsLibres = JSON.parse(JSON.stringify(HORAIRES_ECOLE)); 
             
-            // 2. On récupère les éléments qui bloquent cette école ce jour-là
             let blocagesDuJour = db.indispos.filter(i => 
                 i.jour === jour && (i.ecole_id == ecole_id || i.type === 'trajet' || i.type === 'pause')
             );
 
-            // 3. La soustraction itérative
             blocagesDuJour.forEach(blocage => {
                 let startB = timeToMins(blocage.debut);
                 let endB = timeToMins(blocage.fin);
@@ -1013,11 +771,9 @@
                 
                 let currentLibres = blocsLibres;
                 currentLibres.forEach(libre => {
-                    // Si le blocage ne touche pas du tout le créneau libre, on garde le créneau
                     if (endB <= libre.debut || startB >= libre.fin) {
                         nouveauxBlocsLibres.push(libre);
                     } else {
-                        // Le blocage croise le créneau libre, on le coupe en deux si besoin
                         if (startB > libre.debut) {
                             nouveauxBlocsLibres.push({ debut: libre.debut, fin: startB });
                         }
@@ -1037,7 +793,7 @@
         // ==========================================
         function rafraichirToutesLesVues() {
             
-            // --- 1. MISE A JOUR DU BILAN FINANCIER ---
+            // --- 1. BILAN FINANCIER ---
             let totalKm = 0;
             db.indispos.forEach(i => {
                 if(i.type === 'trajet') totalKm += (i.distance || 0);
@@ -1045,21 +801,21 @@
             let totalFrais = totalKm * (db.ik_rate || 0);
             
             if (document.getElementById('affichage-total-km')) {
-                document.getElementById('affichage-total-km').textContent = totalKm + " km enregistrés";
+                document.getElementById('affichage-total-km').textContent = totalKm + " km enregistrés cette semaine";
                 document.getElementById('affichage-total-frais').textContent = totalFrais.toFixed(2) + " €";
             }
 
-            // --- 2. MISE A JOUR DES LISTES ET SELECTEURS D'ÉCOLES ---
+            // --- 2. LISTES DES ÉCOLES ---
             let ulLieux = document.getElementById('liste-lieux'); 
             if (ulLieux) ulLieux.innerHTML = '';
             
-            let optionsEcoles = '<option value="">-- Sélectionnez une école --</option>';
+            let optionsEcoles = '<option value="">-- Sélectionnez un établissement --</option>';
             
             db.lieux.forEach(l => {
                 if (ulLieux) {
                     ulLieux.innerHTML += `<li class="data-item">
                         <div><strong style="color:${l.couleur}">${l.nom}</strong> <span style="font-size:0.85rem; color:var(--text-muted);">(${l.secteur})</span></div>
-                        <button class="btn-danger" onclick="supprimerLieu(${l.id})">Supprimer</button>
+                        <button class="btn-danger" onclick="supprimerLieu(${l.id})">Retirer</button>
                     </li>`;
                 }
                 optionsEcoles += `<option value="${l.id}">${l.nom}</option>`;
@@ -1068,17 +824,16 @@
             if (document.getElementById('ecoleIndispo')) document.getElementById('ecoleIndispo').innerHTML = optionsEcoles;
             if (document.getElementById('ecoleIntervention')) document.getElementById('ecoleIntervention').innerHTML = optionsEcoles;
 
-            // --- 3. MISE A JOUR DU BROUILLON (Indispos) ---
+            // --- 3. BROUILLON (Indispos) ---
             let ulIndispos = document.getElementById('liste-indispos'); 
             if (ulIndispos) {
                 ulIndispos.innerHTML = '';
-                
                 let indisposTriees = [...db.indispos].sort((a,b) => timeToMins(a.debut) - timeToMins(b.debut));
                 
                 indisposTriees.forEach(i => {
                     let ecole = db.lieux.find(e => e.id == i.ecole_id);
-                    let nomEcole = ecole ? ecole.nom : 'Global';
-                    let tag = i.type === 'trajet' ? 'TRAJET' : (i.type === 'pause' ? 'PAUSE' : 'BLOCAGE');
+                    let nomEcole = ecole ? ecole.nom : 'Affectation Globale';
+                    let tag = i.type === 'trajet' ? 'TRAJET' : (i.type === 'pause' ? 'PAUSE' : 'CONTRAINTE');
                     let infoKm = i.type === 'trajet' && i.distance ? ` (${i.distance} km)` : '';
                     
                     ulIndispos.innerHTML += `<li class="data-item">
@@ -1086,12 +841,12 @@
                             <span class="p-tag">${tag}</span> <strong>${i.jour}</strong> : ${i.debut} - ${i.fin} <br> 
                             <div class="li-desc">${i.motif} à ${nomEcole}${infoKm}</div>
                         </div>
-                        <button class="btn-danger" onclick="supprimerIndispo(${i.id})">Supprimer</button>
+                        <button class="btn-danger" onclick="supprimerIndispo(${i.id})">Effacer</button>
                     </li>`;
                 });
             }
 
-            // --- 4. MISE A JOUR DE LA LISTE DES INTERVENTIONS ---
+            // --- 4. LISTE DES INTERVENTIONS ---
             let ulInterventions = document.getElementById('liste-interventions');
             if (ulInterventions) {
                 ulInterventions.innerHTML = '';
@@ -1099,7 +854,7 @@
                 
                 intersTriees.forEach(inter => {
                     let ecole = db.lieux.find(e => e.id == inter.ecole_id);
-                    let nomEcole = ecole ? ecole.nom : 'École introuvable';
+                    let nomEcole = ecole ? ecole.nom : 'Lieu inconnu';
                     let couleur = ecole ? ecole.couleur : '#0f172a';
                     
                     ulInterventions.innerHTML += `<li class="data-item">
@@ -1107,7 +862,7 @@
                             <strong style="color:${couleur}">${nomEcole}</strong> - <strong>${inter.jour}</strong> (${inter.debut} à ${inter.fin}) <br> 
                             <div class="li-desc">${inter.detail}</div>
                         </div>
-                        <button class="btn-danger" onclick="supprimerIntervention(${inter.id})">Supprimer</button>
+                        <button class="btn-danger" onclick="supprimerIntervention(${inter.id})">Annuler</button>
                     </li>`;
                 });
             }
@@ -1115,7 +870,7 @@
             // --- 5. GÉNÉRATION DE LA MATRICE (Le tableau des créneaux) ---
             let conteneurMatrice = document.getElementById('matrice-container');
             if (conteneurMatrice) {
-                let htmlMatrice = `<table class="doc-table"><tr><th>Écoles</th>`;
+                let htmlMatrice = `<table class="doc-table"><tr><th>Réseau d'Écoles</th>`;
                 JOURS_TRAVAIL.forEach(j => htmlMatrice += `<th>${j}</th>`);
                 htmlMatrice += `</tr>`;
 
@@ -1126,7 +881,7 @@
                         let htmlCell = "";
                         
                         if (dispos.length === 0) {
-                            htmlCell = `<span style="color:#94a3b8; font-style:italic; font-size:0.8rem;">Aucune dispo</span>`;
+                            htmlCell = `<span style="color:#94a3b8; font-style:italic; font-size:0.8rem;">Aucune fenêtre de tir</span>`;
                         } else {
                             dispos.forEach(d => {
                                 htmlCell += `<div class="slot-libre">${minsToTime(d.debut)} - ${minsToTime(d.fin)}</div>`;
@@ -1138,10 +893,10 @@
                 });
                 htmlMatrice += `</table>`;
                 
-                conteneurMatrice.innerHTML = db.lieux.length > 0 ? htmlMatrice : "<p style='color:var(--text-muted);'>Ajoutez d'abord des écoles pour voir la matrice.</p>";
+                conteneurMatrice.innerHTML = db.lieux.length > 0 ? htmlMatrice : "<p style='color:var(--text-muted);'>Commencez par ajouter des établissements à votre réseau.</p>";
             }
 
-            // --- 6. GÉNÉRATION DU PLANNING FINAL (Avec les thèmes SaaS) ---
+            // --- 6. GÉNÉRATION DU PLANNING FINAL (Export) ---
             genererPlanningFinal();
         }
 
@@ -1154,7 +909,6 @@
 
             let htmlFinal = "";
 
-            // On utilise les INTERVENTIONS saisies par l'utilisateur
             let eventsAafficher = db.interventions.map(inter => {
                 let ecole = db.lieux.find(e => e.id == inter.ecole_id);
                 return {
@@ -1162,7 +916,7 @@
                     heure_debut: inter.debut,
                     heure_fin: inter.fin,
                     titre: inter.detail,
-                    nom_ecole: ecole ? ecole.nom : 'École Inconnue',
+                    nom_ecole: ecole ? ecole.nom : 'Inconnu',
                     couleur: ecole ? ecole.couleur : '#3b82f6',
                     sMin: timeToMins(inter.debut),
                     eMin: timeToMins(inter.fin)
@@ -1184,7 +938,6 @@
                     
                     let evtsJour = eventsAafficher.filter(e => e.jour === jour);
                     
-                    // Gestion basique des collisions pour l'agenda
                     let colonnes = [];
                     evtsJour.forEach(e => {
                         let place = false;
@@ -1281,7 +1034,7 @@
             // -- THÈME 5 : TIMELINE --
             else if(db.theme === 'timeline') {
                 htmlFinal += `<div class="tl-wrap">`;
-                let totalMin = 9 * 60; // Base: 08h00 à 17h00 = 9h
+                let totalMin = 9 * 60; // 08h00 à 17h00 = 9h
                 JOURS_TRAVAIL.forEach(jour => {
                     let evtsJour = eventsAafficher.filter(e => e.jour === jour);
                     
@@ -1323,19 +1076,18 @@
         // ==========================================
         function exporterPDF() {
             const element = document.getElementById('zone-impression-pdf');
-            // Le format paysage (landscape) rend mieux pour la Timeline et le Kanban
             const orientation = (db.theme === 'timeline' || db.theme === 'kanban') ? 'landscape' : 'portrait';
             
             html2pdf().set({
                 margin: 10, 
-                filename: 'Mon_Planning_Reseau.pdf', 
+                filename: 'Mon_Planning_Definitif.pdf', 
                 image: {type:'jpeg', quality:0.98}, 
                 html2canvas: {scale:2}, 
                 jsPDF: {unit:'mm', format:'a4', orientation: orientation}
             }).from(element).save();
         }
 
-        // Déclenchement automatique pour hydrater l'application au chargement
+        // Initialisation de l'application
         actualiserVues();
 
     </script>
