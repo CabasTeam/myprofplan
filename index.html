@@ -3,1092 +3,334 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyProfPlan | Poste d'Adaptation</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <title>Outil Pédagogique - Poste d'Adaptation</title>
     <style>
-        /* =========================================
-           DESIGN SYSTEM (SaaS Premium Compact)
-        ========================================= */
-        :root { 
-            --bg-app: #f8fafc; 
-            --bg-surface: #ffffff; 
-            --text-main: #0f172a; 
-            --text-muted: #64748b; 
-            --border: #e2e8f0; 
-            --primary: #0f172a; 
-            --primary-hover: #334155; 
-            --accent: #3b82f6; 
-            --radius: 10px; 
-            --danger: #ef4444; 
-        }
-
+        /* Design épuré, professionnel et sans fioritures */
         body { 
             margin: 0; 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; 
-            background-color: var(--bg-app); 
-            color: var(--text-main); 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #f4f6f8; 
+            color: #333; 
+        }
+
+        /* Système d'onglets en haut */
+        .navbar { 
+            background-color: #2c3e50; 
+            padding: 0; 
             display: flex; 
-            height: 100vh; 
-            overflow: hidden; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        
-        /* --- MENU LATÉRAL --- */
-        .sidebar { 
-            width: 280px; 
-            background-color: var(--bg-surface); 
-            border-right: 1px solid var(--border); 
-            padding: 24px 16px; 
-            display: flex; 
-            flex-direction: column; 
-            z-index: 50; 
-            box-sizing: border-box;
-        }
-        .sidebar-brand { 
-            font-size: 1.4rem; 
-            font-weight: 900; 
-            margin-bottom: 40px; 
-            padding-left: 12px; 
-            display: flex; 
-            align-items: center; 
-            gap: 8px; 
-            letter-spacing: -0.04em; 
-            color: var(--primary);
-        }
-        .sidebar-brand-icon { 
-            width: 14px; 
-            height: 14px; 
-            background: var(--accent); 
-            border-radius: 4px; 
-            transform: rotate(-10deg);
-        }
-        .nav-item { 
-            padding: 12px 16px; 
-            margin-bottom: 4px; 
-            color: var(--text-muted); 
-            text-decoration: none; 
-            border-radius: var(--radius); 
-            font-size: 0.95rem; 
-            font-weight: 600; 
-            cursor: pointer; 
-            transition: 0.2s; 
-        }
-        .nav-item:hover { 
-            color: var(--text-main); 
-            background-color: var(--bg-app); 
-        }
-        .nav-item.active { 
-            background-color: #f1f5f9; 
-            color: var(--accent); 
-        }
-        
-        /* --- ZONE PRINCIPALE --- */
-        .main { 
-            flex: 1; 
-            padding: 40px 50px; 
-            overflow-y: auto; 
-            box-sizing: border-box; 
-        }
-        .header { 
-            margin-bottom: 40px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: flex-end;
-            max-width: 900px;
-        }
-        .header h1 { 
-            font-size: 2.2rem; 
-            font-weight: 800; 
-            margin: 0 0 5px 0; 
-            letter-spacing: -0.03em; 
-        }
-        .header p { 
-            color: var(--text-muted); 
-            margin: 0; 
-            font-size: 1rem; 
-        }
-        
-        /* --- PANNEAUX ET CARTES (Plus compacts pour éviter l'éparpillement) --- */
-        .card { 
-            background: var(--bg-surface); 
-            border: 1px solid var(--border); 
-            border-radius: var(--radius); 
-            padding: 30px; 
-            box-shadow: 0 1px 3px rgba(0,0,0,0.02); 
-            margin-bottom: 30px; 
-            max-width: 900px; /* Réduit pour regrouper les champs */
-            box-sizing: border-box;
-        }
-        .card-header { 
-            font-size: 1.2rem; 
-            font-weight: 800; 
-            margin: 0 0 8px 0; 
-            color: var(--primary); 
-        }
-        .card-desc { 
-            font-size: 0.95rem; 
-            color: var(--text-muted); 
-            margin-bottom: 24px; 
-            padding-bottom: 16px; 
-            border-bottom: 1px solid var(--border); 
-        }
-        
-        /* --- FORMULAIRES --- */
-        .form-row { 
-            display: flex; 
-            gap: 20px; 
-            margin-bottom: 20px; 
-            align-items: flex-end;
-        }
-        .form-group { 
-            flex: 1; 
-        }
-        label { 
-            display: block; 
-            font-size: 0.85rem; 
-            font-weight: 600; 
-            margin-bottom: 8px; 
-            color: #475569;
-        }
-        input[type="text"], input[type="time"], input[type="number"], select { 
-            width: 100%; 
-            padding: 12px; 
-            border: 1px solid var(--border); 
-            border-radius: 8px; 
-            font-size: 0.95rem; 
-            box-sizing: border-box; 
-            outline: none; 
-            transition: 0.2s; 
-            background: #f8fafc;
-        }
-        input:focus, select:focus { 
-            border-color: var(--accent); 
-            background: #ffffff; 
-            box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
-        }
-        
-        /* --- BOUTONS --- */
-        .btn { 
-            background-color: var(--primary); 
-            color: white; 
+        .tab-button { 
+            background: none; 
             border: none; 
-            padding: 12px 24px; 
-            border-radius: 8px; 
-            font-size: 0.95rem; 
-            font-weight: 600; 
+            color: #95a5a6; 
+            padding: 20px 30px; 
+            font-size: 16px; 
+            font-weight: bold; 
             cursor: pointer; 
-            transition: 0.2s; 
-            display: inline-flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 8px;
+            transition: 0.3s;
         }
-        .btn:hover { background-color: var(--primary-hover); transform: translateY(-1px); }
-        .btn-outline { background-color: transparent; color: var(--primary); border: 1px solid var(--border); box-shadow: none;}
-        .btn-outline:hover { background-color: var(--bg-app); transform: none;}
-        .btn-pdf { background-color: #ef4444; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer;}
-        .btn-pdf:hover { background-color: #dc2626; }
-        .btn-danger { padding: 8px 16px; font-size: 0.85rem; border-radius: 6px; cursor: pointer; font-weight: 600; border: 1px solid transparent; background-color: #fef2f2; color: var(--danger); border-color: #fecaca;}
-        .btn-danger:hover { background-color: #fee2e2; }
-        .actions { margin-top: 24px; display: flex; justify-content: flex-end; gap: 12px;}
+        .tab-button:hover { color: #fff; background-color: #34495e; }
+        .tab-button.active { color: #fff; border-bottom: 4px solid #3498db; background-color: #34495e;}
+
+        /* Conteneur principal */
+        .container { 
+            max-width: 1000px; 
+            margin: 40px auto; 
+            padding: 0 20px; 
+        }
+        .view { display: none; }
+        .view.active { display: block; }
+
+        /* Cartes et Formulaires */
+        .card { 
+            background: #fff; 
+            padding: 25px; 
+            border-radius: 6px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
+            margin-bottom: 30px; 
+            border: 1px solid #e0e0e0;
+        }
+        h2 { margin-top: 0; color: #2c3e50; font-size: 1.4rem; border-bottom: 2px solid #ecf0f1; padding-bottom: 10px; margin-bottom: 20px;}
         
-        /* --- LISTES DE DONNÉES --- */
-        .data-list { list-style: none; padding: 0; margin: 0; }
-        .data-item { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--border); }
-        .data-item:last-child { border-bottom: none; padding-bottom: 0;}
-        .data-item:first-child { padding-top: 0;}
-        .p-tag { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; border-radius: 4px; padding: 2px 4px; background: rgba(0,0,0,0.1); flex-shrink: 0; display: inline-block; margin-bottom: 4px; margin-right: 6px;}
+        .form-row { display: flex; gap: 15px; align-items: flex-end; margin-bottom: 15px; flex-wrap: wrap;}
+        .form-group { flex: 1; min-width: 150px; }
+        label { display: block; font-size: 0.85rem; font-weight: bold; margin-bottom: 5px; color: #555;}
+        input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 1rem; }
+        button.btn-add { background: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+        button.btn-add:hover { background: #2980b9; }
+
+        /* Ligne de temps (Timeline) */
+        .timeline-container { margin-top: 40px; }
+        .timeline-wrapper { position: relative; height: 60px; background: #e0e0e0; border-radius: 4px; overflow: hidden; margin-bottom: 5px; border: 1px solid #ccc;}
+        .timeline-axis { display: flex; justify-content: space-between; color: #7f8c8d; font-size: 0.8rem; font-weight: bold; padding: 0 5px;}
         
-        /* --- AFFICHAGE DES PAGES --- */
-        .page { display: none; }
-        .page.active { display: block; }
+        /* Blocs de la Timeline */
+        .block { position: absolute; height: 100%; top: 0; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.8rem; font-weight: bold; box-sizing: border-box; overflow: hidden; white-space: nowrap;}
+        .block.red { background-color: #e74c3c; border-left: 2px solid #fff; border-right: 2px solid #fff; z-index: 10;}
+        .block.green { background-color: #2ecc71; z-index: 5;}
 
-        /* --- SÉLECTEUR DE THÈMES MODERNE --- */
-        .theme-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px; }
-        .theme-card { border: 2px solid var(--border); border-radius: 12px; padding: 15px; cursor: pointer; transition: 0.2s; background: white; position: relative;}
-        .theme-card:hover { border-color: #cbd5e1; transform: translateY(-2px);}
-        .theme-card.active { border-color: var(--accent); box-shadow: 0 4px 12px rgba(59,130,246,0.15);}
-        .theme-card.active::after { content: ""; position: absolute; top: 10px; right: 10px; background: var(--accent); width: 12px; height: 12px; border-radius: 50%; display: block;}
-        .mini-preview { width: 100%; height: 80px; background: #f8fafc; border-radius: 6px; margin-bottom: 15px; border: 1px solid var(--border); overflow: hidden; display: flex; padding: 5px; box-sizing: border-box; gap: 4px;}
-        .theme-info h3 { margin: 0 0 4px 0; font-size: 0.95rem; font-weight: 800; color: var(--primary);}
-        .theme-info p { margin: 0; font-size: 0.8rem; color: var(--text-muted);}
-        .mini-agenda .col { flex: 1; border-right: 1px solid #e2e8f0; position: relative; }
-        .mini-agenda .block { position: absolute; background: #bfdbfe; border-left: 2px solid #3b82f6; width: 80%; left: 10%; border-radius: 2px; }
-        .mini-kanban .col { flex: 1; background: #e2e8f0; border-radius: 4px; padding: 4px; display: flex; flex-direction: column; gap: 4px; }
-        .mini-kanban .block { background: white; height: 15px; border-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); border-top: 2px solid #10b981;}
-        .mini-liste { flex-direction: column; background: white;}
-        .mini-liste .row { display: flex; align-items: center; gap: 8px; padding: 4px; border-bottom: 1px solid #f1f5f9; }
-        .mini-liste .dot { width: 8px; height: 8px; background: #f43f5e; border-radius: 2px; }
-        .mini-liste .line { height: 4px; background: #cbd5e1; flex: 1; border-radius: 2px;}
-        .mini-aesthetic { gap: 6px; background: white;}
-        .mini-aesthetic .col { flex: 1; display: flex; flex-direction: column; gap: 6px; }
-        .mini-aesthetic .blob { background: #fdf4ff; border: 1px solid #fbcfe8; border-radius: 6px; height: 25px;}
-        .mini-timeline { flex-direction: column; gap: 4px; background: white;}
-        .mini-timeline .row { display: flex; align-items: center; flex: 1; gap: 4px; }
-        .mini-timeline .lbl { width: 15px; height: 4px; background: #94a3b8; border-radius: 2px;}
-        .mini-timeline .track { flex: 1; background: #f8fafc; height: 100%; position: relative; border-radius: 2px; border: 1px solid #e2e8f0;}
-        .mini-timeline .bar { position: absolute; height: 80%; top: 10%; background: #8b5cf6; border-radius: 2px;}
+        /* Listes de données */
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { text-align: left; padding: 12px; border-bottom: 1px solid #ecf0f1; }
+        th { color: #7f8c8d; font-size: 0.85rem; text-transform: uppercase; }
+        .btn-delete { background: none; border: none; color: #e74c3c; cursor: pointer; font-weight: bold; text-decoration: underline;}
 
-        /* --- BILAN FINANCIER --- */
-        .bilan-box { background: #f0fdf4; border: 1px solid #bbf7d0; padding: 25px; border-radius: 8px; margin-bottom: 25px; max-width: 900px;}
-        .bilan-title { color: #166534; font-weight: 800; font-size: 1.1rem; margin-bottom: 10px;}
-        .bilan-amount { font-size: 2.5rem; font-weight: 900; color: #15803d; margin-bottom: 5px;}
-        .bilan-details { color: #166534; font-weight: 500; font-size: 0.95rem;}
-
-        /* --- STYLES DES PLANNINGS RÉELS (Générés) --- */
-        .planning-scroll-area { width: 100%; overflow-x: auto; padding-bottom: 15px; }
-        .ag-wrap { border: 1px solid var(--border); border-radius: 12px; background: white; display: flex; flex-direction: column; overflow: hidden; min-width: 800px;}
-        .ag-head { display: flex; border-bottom: 1px solid var(--border); padding-left: 50px; }
-        .ag-day { flex: 1; text-align: center; padding: 15px; font-weight: 700; color: var(--primary); border-right: 1px solid var(--border); }
-        .ag-body { display: flex; position: relative; height: 750px; overflow-y: auto; padding-top: 25px;}
-        .ag-axis { width: 50px; flex-shrink: 0; border-right: 1px solid var(--border); position: relative; }
-        .ag-time { position: absolute; width: 100%; text-align: center; font-size: 0.75rem; color: var(--text-muted); font-weight: 600; transform: translateY(-50%); }
-        .ag-col { flex: 1; position: relative; border-right: 1px solid var(--border); }
-        .ag-line { position: absolute; width: 100%; height: 1px; background: #f1f5f9; left: 0; }
-        .ag-block { position: absolute; left: 4px; right: 4px; border-radius: 6px; padding: 6px 10px; box-sizing: border-box; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);}
-        .kb-wrap { display: flex; gap: 15px; align-items: flex-start; }
-        .kb-col { flex: 1; background: #f8fafc; border-radius: 12px; padding: 12px; min-height: 400px; border: 1px solid var(--border); }
-        .kb-head { font-weight: 800; text-align: center; padding-bottom: 12px; border-bottom: 2px solid var(--border); margin-bottom: 12px; }
-        .kb-card { background: white; border-radius: 8px; padding: 12px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--border); }
-        .li-wrap { background: white; border-radius: 12px; border: 1px solid var(--border); padding: 30px;}
-        .li-group { margin-bottom: 30px; }
-        .li-title { font-size: 1.2rem; font-weight: 800; border-bottom: 2px solid var(--border); padding-bottom: 8px; margin-bottom: 12px;}
-        .li-row { display: flex; align-items: center; padding: 12px; border-radius: 8px; margin-bottom: 4px; background: #f8fafc;}
-        .li-dot { width: 10px; height: 10px; border-radius: 3px; margin-right: 15px; }
-        .aes-wrap { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
-        .aes-col { display: flex; flex-direction: column; gap: 15px; }
-        .aes-head { font-size: 1.1rem; font-weight: 900; text-align: center; color: var(--primary); margin-bottom: 10px;}
-        .aes-blob { border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); transition: 0.2s;}
-        .tl-wrap { background: white; border-radius: 12px; border: 1px solid var(--border); overflow: hidden; min-width: 800px;}
-        .tl-row { display: flex; border-bottom: 1px solid var(--border); min-height: 80px;}
-        .tl-day { width: 100px; padding: 20px; font-weight: 800; background: #f8fafc; border-right: 1px solid var(--border); display: flex; align-items: center; justify-content: center;}
-        .tl-track { flex: 1; position: relative; background: white; }
-        .tl-grid { position: absolute; height: 100%; width: 1px; background: #f1f5f9; top: 0;}
-        .tl-bar { position: absolute; border-radius: 6px; padding: 8px 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); overflow: hidden; white-space: nowrap;}
-        
-        .p-time { font-size: 0.75rem; font-weight: 800; opacity: 0.8;}
-        .p-tit { font-size: 0.9rem; font-weight: 700; line-height: 1.2; margin: 4px 0; display:flex; align-items:flex-start; flex-direction: column;}
-        
-        /* La Matrice */
-        .doc-table { width: 100%; border-collapse: collapse; background: #fff; font-size: 0.9rem; margin-top: 10px; border: 1px solid #cbd5e1;}
-        .doc-table th, .doc-table td { border: 1px solid #cbd5e1; padding: 12px; text-align: center; vertical-align: top; }
-        .doc-table th { background: #f8fafc; font-weight: 700; color: #334155; }
-        .school-row-header { font-weight: 700; background: #f8fafc; text-align: left !important; width: 18%; color: #0f172a;}
-        .slot-libre { margin-bottom: 6px; padding: 6px; background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; font-size: 0.85rem; border-radius: 4px; font-weight: 600;}
-
-        /* Notification */
-        .toast { position: fixed; bottom: 30px; right: 30px; background-color: var(--primary); color: white; padding: 16px 32px; border-radius: 8px; font-weight: 600; opacity: 0; transform: translateY(20px); transition: 0.3s; z-index: 999; box-shadow: 0 4px 6px rgba(0,0,0,0.1);}
-        .toast.show { opacity: 1; transform: translateY(0); }
-
-        /* Couleurs d'écoles dans la gestion des écoles */
-        .color-palette { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 5px;}
-        .color-swatch { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.1);}
-        .color-swatch:hover { transform: scale(1.1); }
-        .color-swatch.active { transform: scale(1.1); box-shadow: 0 0 0 2px var(--bg-surface), 0 0 0 4px var(--primary); }
+        /* Bilan financier */
+        .bilan { display: flex; gap: 30px; background: #f0fdf4; padding: 20px; border-radius: 6px; border: 1px solid #bbf7d0; margin-bottom: 20px;}
+        .bilan-item { flex: 1; }
+        .bilan-val { font-size: 2rem; font-weight: bold; color: #166534; }
+        .bilan-lbl { font-size: 0.9rem; color: #15803d; font-weight: bold; text-transform: uppercase;}
 
     </style>
 </head>
 <body>
 
-    <!-- BARRE DE NAVIGATION (Titres optimisés) -->
-    <nav class="sidebar">
-        <div class="sidebar-brand"><div class="sidebar-brand-icon"></div> MyProfPlan</div>
-        <a class="nav-item active" onclick="naviguer('accueil', this)">Accueil</a>
-        <a class="nav-item" onclick="naviguer('bilan', this)">1. Tableau de bord & Bilan</a>
-        <a class="nav-item" onclick="naviguer('config', this)">2. Format d'Export (PDF)</a>
-        <a class="nav-item" onclick="naviguer('ecoles', this)">3. Gestion des Écoles</a>
-        <a class="nav-item" onclick="naviguer('brouillon', this)">4. Saisie des Indisponibilités</a>
-        <a class="nav-item" onclick="naviguer('matrice', this)">5. Calculateur de Créneaux</a>
-        <a class="nav-item" onclick="naviguer('interventions', this)">6. Planification des Cours</a>
-        <a class="nav-item" onclick="naviguer('planning', this)">7. Emploi du Temps Final</a>
-    </nav>
+    <!-- ONGLETS PRINCIPAUX -->
+    <div class="navbar">
+        <button class="tab-button active" onclick="switchTab('filtre')">Moteur de Filtre (Planning)</button>
+        <button class="tab-button" onclick="switchTab('financier')">Moteur Financier (Trajets)</button>
+    </div>
 
-    <!-- ZONE PRINCIPALE -->
-    <main class="main">
+    <div class="container">
         
-        <!-- PAGE : ACCUEIL -->
-        <div id="page-accueil" class="page active">
-            <div class="hero">
-                <h1>L'outil d'adaptation scolaire de référence.</h1>
-                <p>Déclarez les indisponibilités de vos écoles et vos temps de trajet. Le logiciel calcule instantanément vos créneaux libres et votre bilan kilométrique.</p>
-                <button class="btn" style="font-size: 1.1rem; padding: 16px 32px;" onclick="document.querySelectorAll('.nav-item')[3].click()">Commencer la configuration</button>
-            </div>
-        </div>
-
-        <!-- PAGE 1 : BILAN & DONNÉES -->
-        <div id="page-bilan" class="page">
-            <div class="header">
-                <div><h1>Tableau de bord & Bilan</h1><p>Suivez vos déplacements et configurez vos indemnités.</p></div>
-            </div>
+        <!-- VUE 1 : MOTEUR DE FILTRE -->
+        <div id="vue-filtre" class="view active">
             
-            <div class="bilan-box">
-                <div class="bilan-title">Indemnités kilométriques générées</div>
-                <div class="bilan-amount" id="affichage-total-frais">0.00 €</div>
-                <div class="bilan-details" id="affichage-total-km">0 km de trajets enregistrés cette semaine</div>
-            </div>
-
             <div class="card">
-                <h2 class="card-header">Barème de remboursement</h2>
-                <div class="card-desc">Indiquez le tarif remboursé par votre académie par kilomètre.</div>
+                <h2>Déclarer une Indisponibilité</h2>
                 <div class="form-row">
+                    <div class="form-group" style="flex: 2;">
+                        <label>Motif de l'indisponibilité (ex: Piscine CP)</label>
+                        <input type="text" id="indispoTitre" placeholder="Saisir le motif...">
+                    </div>
                     <div class="form-group">
-                        <label>Tarif par kilomètre (€)</label>
-                        <input type="number" step="0.01" id="ikRate" onchange="sauvegarderIK()">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- PAGE 2 : FORMAT D'EXPORT -->
-        <div id="page-config" class="page">
-            <div class="header">
-                <div><h1>Format d'Export</h1><p>Choisissez la structure visuelle de votre document final.</p></div>
-            </div>
-
-            <div class="card">
-                <h2 class="card-header">Modèle PDF</h2>
-                <div class="card-desc">Sélectionnez le style qui correspond le mieux à votre organisation.</div>
-                
-                <div class="theme-grid">
-                    <div class="theme-card active" id="theme-agenda" onclick="choisirTheme('agenda')">
-                        <div class="mini-preview mini-agenda"><div class="col"><div class="block" style="top:20px; height:30px;"></div></div><div class="col"></div><div class="col"><div class="block" style="top:10px; height:40px; background:#fef08a; border-color:#eab308;"></div></div></div>
-                        <div class="theme-info"><h3>Agenda Pro</h3><p>Grille horaire stricte</p></div>
-                    </div>
-                    <div class="theme-card" id="theme-kanban" onclick="choisirTheme('kanban')">
-                        <div class="mini-preview mini-kanban"><div class="col"><div class="block"></div><div class="block" style="border-color:#3b82f6;"></div></div><div class="col"><div class="block" style="border-color:#f43f5e;"></div></div><div class="col"></div></div>
-                        <div class="theme-info"><h3>Cartes Kanban</h3><p>Vue par colonnes</p></div>
-                    </div>
-                    <div class="theme-card" id="theme-liste" onclick="choisirTheme('liste')">
-                        <div class="mini-preview mini-liste"><div class="row"><div class="dot"></div><div class="line"></div></div><div class="row"><div class="dot" style="background:#3b82f6;"></div><div class="line" style="width:60%;"></div></div><div class="row"><div class="dot" style="background:#10b981;"></div><div class="line"></div></div></div>
-                        <div class="theme-info"><h3>Liste Notion</h3><p>Design ultra-épuré</p></div>
-                    </div>
-                    <div class="theme-card" id="theme-aesthetic" onclick="choisirTheme('aesthetic')">
-                        <div class="mini-preview mini-aesthetic"><div class="col"><div class="blob"></div></div><div class="col"><div class="blob" style="background:#dbeafe; border-color:#bfdbfe; height:40px;"></div></div><div class="col"><div class="blob" style="background:#fef9c3; border-color:#fef08a;"></div></div></div>
-                        <div class="theme-info"><h3>Aesthetic</h3><p>Bulles colorées</p></div>
-                    </div>
-                    <div class="theme-card" id="theme-timeline" onclick="choisirTheme('timeline')">
-                        <div class="mini-preview mini-timeline"><div class="row"><div class="lbl"></div><div class="track"><div class="bar" style="left:10%; width:30%;"></div></div></div><div class="row"><div class="lbl"></div><div class="track"><div class="bar" style="left:40%; width:40%; background:#ec4899;"></div></div></div></div>
-                        <div class="theme-info"><h3>Timeline</h3><p>Gantt horizontal</p></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- PAGE 3 : GESTION DES ECOLES -->
-        <div id="page-ecoles" class="page">
-            <div class="header">
-                <div><h1>Gestion des Écoles</h1><p>Les établissements qui composent votre réseau d'intervention.</p></div>
-            </div>
-
-            <div class="card">
-                <h2 class="card-header">Ajouter un établissement</h2>
-                <div class="card-desc">Déclarez une école et attribuez-lui une couleur pour la repérer facilement sur le planning.</div>
-                
-                <div class="form-row">
-                    <div class="form-group" style="flex: 2;">
-                        <label>Nom de l'établissement</label>
-                        <input type="text" id="nomLieu" placeholder="Ex: École Ste Thérèse">
-                    </div>
-                    <div class="form-group" style="flex: 1;">
-                        <label>Secteur / Ville</label>
-                        <input type="text" id="secteurLieu" placeholder="Ex: Augan">
-                    </div>
-                </div>
-
-                <div style="margin-bottom: 25px;">
-                    <label>Couleur attribuée à cette école</label>
-                    <div class="color-palette" id="paletteEcole">
-                        <div class="color-swatch active" style="background:#ef4444" onclick="selectColorEcole('#ef4444', this)"></div>
-                        <div class="color-swatch" style="background:#f59e0b" onclick="selectColorEcole('#f59e0b', this)"></div>
-                        <div class="color-swatch" style="background:#3b82f6" onclick="selectColorEcole('#3b82f6', this)"></div>
-                        <div class="color-swatch" style="background:#10b981" onclick="selectColorEcole('#10b981', this)"></div>
-                        <div class="color-swatch" style="background:#8b5cf6" onclick="selectColorEcole('#8b5cf6', this)"></div>
-                        <div class="color-swatch" style="background:#ec4899" onclick="selectColorEcole('#ec4899', this)"></div>
-                        <div class="color-swatch" style="background:#64748b" onclick="selectColorEcole('#64748b', this)"></div>
-                    </div>
-                    <input type="hidden" id="couleurEcoleVal" value="#ef4444">
-                </div>
-
-                <div class="actions">
-                    <button class="btn" onclick="sauvegarderLieu()">Enregistrer l'école</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <h2 class="card-header">Réseau actuel</h2>
-                <ul class="data-list" id="liste-lieux"></ul>
-            </div>
-        </div>
-
-        <!-- PAGE 4 : SAISIE BROUILLON (INDISPOS) - RÉORGANISÉE ET COMPACTE -->
-        <div id="page-brouillon" class="page">
-            <div class="header">
-                <div><h1>Indisponibilités & Trajets</h1><p>Saisissez les créneaux où les élèves sont en sport, à la piscine, ainsi que vos temps de route.</p></div>
-            </div>
-
-            <div class="card">
-                <h2 class="card-header">Déclarer une nouvelle contrainte</h2>
-                <div class="card-desc">L'algorithme soustraira ces heures de votre emploi du temps pour trouver vos disponibilités.</div>
-                
-                <div class="form-row">
-                    <div class="form-group" style="flex: 1.5;">
-                        <label>Type de contrainte</label>
-                        <select id="typeIndispo" onchange="adapterFormulaireIndispo()">
-                            <option value="indispo">Indisponibilité de la classe</option>
-                            <option value="trajet">Temps de trajet personnel</option>
-                            <option value="pause">Pause repas / Récréation</option>
-                        </select>
-                    </div>
-                    <div class="form-group" id="boxEcoleIndispo" style="flex: 2;">
-                        <label>Établissement concerné</label>
-                        <select id="ecoleIndispo"></select>
-                    </div>
-                    <div class="form-group" style="flex: 1;">
-                        <label>Jour</label>
-                        <select id="jourIndispo">
-                            <option value="Lundi">Lundi</option>
-                            <option value="Mardi">Mardi</option>
-                            <option value="Jeudi">Jeudi</option>
-                            <option value="Vendredi">Vendredi</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group" style="flex: 2;">
-                        <label>Motif (ex: Piscine, Orthophoniste...)</label>
-                        <input type="text" id="motifIndispo" placeholder="Détail du blocage">
-                    </div>
-                    <div class="form-group" style="flex: 1;">
-                        <label>De (Heure)</label>
-                        <input type="time" id="debutIndispo" value="09:00">
-                    </div>
-                    <div class="form-group" style="flex: 1;">
-                        <label>À (Heure)</label>
-                        <input type="time" id="finIndispo" value="10:00">
-                    </div>
-                    <div class="form-group" id="boxDistance" style="display:none; flex: 1;">
-                        <label>Distance (km)</label>
-                        <input type="number" id="distanceIndispo" placeholder="Ex: 15" step="0.1" min="0">
-                    </div>
-                </div>
-
-                <div class="actions">
-                    <button class="btn" onclick="ajouterIndispo()">Enregistrer la contrainte</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <h2 class="card-header">Liste des contraintes enregistrées</h2>
-                <ul class="data-list" id="liste-indispos"></ul>
-            </div>
-        </div>
-
-        <!-- PAGE 5 : MATRICE (CALCULATEUR DE CRÉNEAUX) -->
-        <div id="page-matrice" class="page">
-            <div class="header">
-                <div><h1>Calculateur de Créneaux Libres</h1><p>Résultat du croisement entre les horaires d'école normaux et vos contraintes.</p></div>
-            </div>
-
-            <div class="card" style="padding: 0; overflow: hidden; border: none; box-shadow: none; background: transparent; max-width: 100%;">
-                <div id="matrice-container"></div>
-            </div>
-        </div>
-
-        <!-- PAGE 6 : PLACER LES INTERVENTIONS -->
-        <div id="page-interventions" class="page">
-            <div class="header">
-                <div><h1>Planification des Cours</h1><p>En vous basant sur le calculateur, fixez les heures de vos interventions réelles.</p></div>
-            </div>
-
-            <div class="card">
-                <h2 class="card-header">Créer une intervention</h2>
-                
-                <div class="form-row">
-                    <div class="form-group" style="flex: 2;">
-                        <label>École d'intervention</label>
-                        <select id="ecoleIntervention"></select>
-                    </div>
-                    <div class="form-group" style="flex: 1;">
-                        <label>Jour d'intervention</label>
-                        <select id="jourIntervention">
-                            <option value="Lundi">Lundi</option>
-                            <option value="Mardi">Mardi</option>
-                            <option value="Jeudi">Jeudi</option>
-                            <option value="Vendredi">Vendredi</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group" style="flex: 2;">
-                        <label>Détails (Classes, Groupes)</label>
-                        <input type="text" id="detailIntervention" placeholder="Ex: AS CP avec N. Ferrand">
-                    </div>
-                    <div class="form-group" style="flex: 1;">
                         <label>Heure de début</label>
-                        <input type="time" id="debutIntervention" value="09:00">
+                        <input type="time" id="indispoDebut" value="09:00">
                     </div>
-                    <div class="form-group" style="flex: 1;">
+                    <div class="form-group">
                         <label>Heure de fin</label>
-                        <input type="time" id="finIntervention" value="10:00">
+                        <input type="time" id="indispoFin" value="10:00">
                     </div>
-                </div>
-
-                <div class="actions">
-                    <button class="btn" onclick="ajouterIntervention()">Valider le cours</button>
+                    <button class="btn-add" onclick="ajouterIndispo()">Bloquer ce créneau</button>
                 </div>
             </div>
 
             <div class="card">
-                <h2 class="card-header">Interventions planifiées</h2>
-                <ul class="data-list" id="liste-interventions"></ul>
+                <h2>Visualisation du Calcul Inversé</h2>
+                <p style="font-size: 0.9rem; color: #7f8c8d; margin-top: -10px;">Le système soustrait vos blocages (<span style="color:#e74c3c; font-weight:bold;">Rouge</span>) de la journée type pour déduire vos créneaux libres (<span style="color:#2ecc71; font-weight:bold;">Vert</span>).</p>
+                
+                <div class="timeline-container">
+                    <div class="timeline-wrapper" id="timeline">
+                        <!-- Les blocs rouges et verts seront générés ici par JS -->
+                    </div>
+                    <div class="timeline-axis">
+                        <span>08h30</span>
+                        <span>10h30</span>
+                        <span>12h30</span>
+                        <span>14h30</span>
+                        <span>16h30</span>
+                    </div>
+                </div>
+
+                <table id="table-indispos" style="margin-top: 30px;">
+                    <thead><tr><th>Motif du blocage</th><th>Horaires</th><th>Action</th></tr></thead>
+                    <tbody id="liste-indispos"></tbody>
+                </table>
             </div>
         </div>
 
-        <!-- PAGE 7 : PLANNING FINAL -->
-        <div id="page-planning" class="page">
-            <div class="header">
-                <div><h1>Emploi du Temps Final</h1><p>Vos cours appliqués au modèle d'export sélectionné.</p></div>
-                <div style="display:flex; gap: 15px;">
-                    <button class="btn btn-outline" onclick="genererPlanningFinal()">Actualiser l'affichage</button>
-                    <button class="btn-pdf" onclick="exporterPDF()">Télécharger en PDF</button>
-                </div>
-            </div>
+        <!-- VUE 2 : MOTEUR FINANCIER -->
+        <div id="vue-financier" class="view">
             
-            <div class="planning-scroll-area">
-                <div id="zone-impression-pdf">
-                    <div id="resultat-generation"></div>
+            <div class="bilan">
+                <div class="bilan-item">
+                    <div class="bilan-val" id="total-km">0.0</div>
+                    <div class="bilan-lbl">Total Kilomètres</div>
+                </div>
+                <div class="bilan-item">
+                    <div class="bilan-val" id="total-euro">0.00 €</div>
+                    <div class="bilan-lbl">Montant Remboursé</div>
                 </div>
             </div>
+
+            <div class="card">
+                <h2>Configuration & Saisie des Trajets</h2>
+                <div class="form-row">
+                    <div class="form-group" style="max-width: 200px;">
+                        <label>Barème (Prix par km en €)</label>
+                        <input type="number" id="baremePrix" step="0.01" value="0.32" onchange="calculerFrais()">
+                    </div>
+                </div>
+                <hr style="border: 0; border-top: 1px solid #ecf0f1; margin: 20px 0;">
+                <div class="form-row">
+                    <div class="form-group" style="flex: 2;">
+                        <label>Intitulé du trajet (ex: Campénéac -> Ploërmel)</label>
+                        <input type="text" id="trajetNom" placeholder="Saisir le trajet...">
+                    </div>
+                    <div class="form-group">
+                        <label>Distance (en km)</label>
+                        <input type="number" id="trajetDistance" step="0.1" min="0" placeholder="Ex: 15">
+                    </div>
+                    <button class="btn-add" onclick="ajouterTrajet()">Ajouter le trajet</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Liste des Trajets Effectués</h2>
+                <table>
+                    <thead><tr><th>Intitulé du trajet</th><th>Distance</th><th>Action</th></tr></thead>
+                    <tbody id="liste-trajets"></tbody>
+                </table>
+            </div>
+
         </div>
 
-    </main>
-
-    <!-- NOTIFICATION -->
-    <div id="toast" class="toast"></div>
+    </div>
 
     <script>
-        // ==========================================
-        // BASE DE DONNÉES & VARIABLES GLOBALES
-        // ==========================================
-        let db = JSON.parse(localStorage.getItem('MyProfPlan_SaaS_Ultimate')) || { 
-            lieux: [], 
-            indispos: [], 
-            interventions: [],
-            ik_rate: 0.32,
-            theme: 'agenda'
-        };
-
-        const JOURS_TRAVAIL = ['Lundi', 'Mardi', 'Jeudi', 'Vendredi'];
-
-        // Horaires théoriques d'ouverture d'une école (Sert pour le Calculateur)
-        const HORAIRES_ECOLE = [
-            { debut: 8 * 60 + 30, fin: 12 * 60 + 0 },
-            { debut: 13 * 60 + 30, fin: 16 * 60 + 30 }
-        ];
-
-        if (document.getElementById('ikRate')) {
-            document.getElementById('ikRate').value = db.ik_rate;
-        }
-
-        // ==========================================
-        // FONCTIONS UTILITAIRES
-        // ==========================================
-        function afficherNotification(msg) {
-            let toast = document.getElementById('toast');
-            toast.textContent = msg; 
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 3000);
-        }
-
-        function naviguer(idPage, elementMenu) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById('page-' + idPage).classList.add('active');
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            elementMenu.classList.add('active');
-            rafraichirToutesLesVues();
-        }
-
-        function sauvegarderBaseDeDonnees() {
-            localStorage.setItem('MyProfPlan_SaaS_Ultimate', JSON.stringify(db));
-            rafraichirToutesLesVues();
-        }
-
-        function timeToMins(timeStr) {
-            let [h, m] = timeStr.split(':').map(Number);
-            return h * 60 + m;
-        }
-
-        function minsToTime(mins) {
-            let h = Math.floor(mins / 60).toString().padStart(2, '0');
-            let m = (mins % 60).toString().padStart(2, '0');
-            return `${h}h${m}`;
-        }
-
-        // ==========================================
-        // GESTION DU THÈME ET DES COULEURS
-        // ==========================================
-        function choisirTheme(nomTheme) {
-            db.theme = nomTheme; 
-            sauvegarderBaseDeDonnees();
-            document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('active'));
-            document.getElementById('theme-' + nomTheme).classList.add('active');
-            afficherNotification("Modèle d'export appliqué.");
-        }
-
-        if(document.getElementById('theme-' + db.theme)) {
-            document.getElementById('theme-' + db.theme).classList.add('active');
-        }
-
-        function selectColorEcole(hexCode, element) {
-            document.getElementById('couleurEcoleVal').value = hexCode;
-            document.querySelectorAll('#paletteEcole .color-swatch').forEach(s => s.classList.remove('active'));
-            if(element) element.classList.add('active');
-        }
-
-        // ==========================================
-        // GESTION FINANCIÈRE
-        // ==========================================
-        function sauvegarderIK() {
-            db.ik_rate = parseFloat(document.getElementById('ikRate').value) || 0;
-            sauvegarderBaseDeDonnees();
-            afficherNotification("Barème kilométrique mis à jour.");
-        }
-
-        // ==========================================
-        // GESTION DES ÉCOLES (Lieux)
-        // ==========================================
-        function sauvegarderLieu() {
-            let nom = document.getElementById('nomLieu').value;
-            let secteur = document.getElementById('secteurLieu').value;
-            let couleur = document.getElementById('couleurEcoleVal').value;
-
-            if(!nom) return afficherNotification("Le nom de l'école est obligatoire.");
+        // --- GESTION DES ONGLETS ---
+        function switchTab(tabId) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
             
-            db.lieux.push({ id: Date.now(), nom: nom, secteur: secteur, couleur: couleur });
-            document.getElementById('nomLieu').value = '';
-            document.getElementById('secteurLieu').value = '';
-            
-            sauvegarderBaseDeDonnees();
-            afficherNotification("École ajoutée avec succès.");
+            document.getElementById('vue-' + tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
         }
 
-        function supprimerLieu(id) {
-            db.lieux = db.lieux.filter(x => x.id !== id);
-            db.indispos = db.indispos.filter(x => x.ecole_id != id);
-            db.interventions = db.interventions.filter(x => x.ecole_id != id);
-            sauvegarderBaseDeDonnees();
-            afficherNotification("L'école a été retirée.");
-        }
+        // --- BASES DE DONNÉES EN MÉMOIRE ---
+        let indisponibilites = [];
+        let trajets = [];
+
+        // Constantes de temps pour la Timeline (08h30 à 16h30)
+        const DEBUT_JOURNEE = 8 * 60 + 30; // 510 minutes
+        const FIN_JOURNEE = 16 * 60 + 30;  // 990 minutes
+        const DUREE_TOTALE = FIN_JOURNEE - DEBUT_JOURNEE; // 480 minutes
+
+        // Utilitaires de temps
+        function timeToMins(t) { let [h, m] = t.split(':').map(Number); return h * 60 + m; }
+        function minsToTime(m) { let h = Math.floor(m / 60).toString().padStart(2, '0'); let min = (m % 60).toString().padStart(2, '0'); return `${h}:${min}`; }
+        function calcPct(mins) { return ((mins - DEBUT_JOURNEE) / DUREE_TOTALE) * 100; }
 
         // ==========================================
-        // GESTION DU BROUILLON (Indisponibilités)
+        // MOTEUR DE FILTRE (PLANNING INVERSÉ)
         // ==========================================
-        function adapterFormulaireIndispo() {
-            let type = document.getElementById('typeIndispo').value;
-            let boxDistance = document.getElementById('boxDistance');
-            let boxEcole = document.getElementById('boxEcoleIndispo');
-
-            if (type === 'trajet') {
-                boxDistance.style.display = 'block';
-                boxEcole.style.opacity = '0.4';
-                document.getElementById('ecoleIndispo').value = ''; 
-            } else {
-                boxDistance.style.display = 'none';
-                document.getElementById('distanceIndispo').value = '';
-                boxEcole.style.opacity = '1';
-            }
-        }
-
         function ajouterIndispo() {
-            let type = document.getElementById('typeIndispo').value;
-            let ecole_id = document.getElementById('ecoleIndispo').value;
-            let jour = document.getElementById('jourIndispo').value;
-            let motif = document.getElementById('motifIndispo').value;
-            let debut = document.getElementById('debutIndispo').value;
-            let fin = document.getElementById('finIndispo').value;
-            let distance = type === 'trajet' ? (parseFloat(document.getElementById('distanceIndispo').value) || 0) : 0;
+            let titre = document.getElementById('indispoTitre').value;
+            let deb = document.getElementById('indispoDebut').value;
+            let fin = document.getElementById('indispoFin').value;
 
-            if (!motif || !debut || !fin) return afficherNotification("Veuillez renseigner le motif et les horaires.");
-            if (type === 'indispo' && !ecole_id) return afficherNotification("Sélectionnez l'établissement concerné.");
-            if (timeToMins(debut) >= timeToMins(fin)) return afficherNotification("L'heure de fin doit succéder à l'heure de début.");
+            if(!titre || !deb || !fin) return alert("Remplissez tous les champs.");
+            if(timeToMins(deb) >= timeToMins(fin)) return alert("Horaires invalides.");
+            if(timeToMins(deb) < DEBUT_JOURNEE || timeToMins(fin) > FIN_JOURNEE) return alert("Les horaires doivent être entre 08h30 et 16h30.");
 
-            db.indispos.push({ id: Date.now(), type: type, ecole_id: ecole_id, jour: jour, motif: motif, debut: debut, fin: fin, distance: distance });
-
-            document.getElementById('motifIndispo').value = '';
-            document.getElementById('distanceIndispo').value = '';
+            indisponibilites.push({ id: Date.now(), titre: titre, start: timeToMins(deb), end: timeToMins(fin) });
+            document.getElementById('indispoTitre').value = '';
             
-            sauvegarderBaseDeDonnees();
-            afficherNotification("La contrainte a bien été ajoutée.");
+            actualiserFiltre();
         }
 
         function supprimerIndispo(id) {
-            db.indispos = db.indispos.filter(x => x.id !== id);
-            sauvegarderBaseDeDonnees();
-            afficherNotification("La contrainte a été supprimée.");
+            indisponibilites = indisponibilites.filter(i => i.id !== id);
+            actualiserFiltre();
         }
 
-        // ==========================================
-        // GESTION DES INTERVENTIONS (Finales)
-        // ==========================================
-        function ajouterIntervention() {
-            let ecole_id = document.getElementById('ecoleIntervention').value;
-            let jour = document.getElementById('jourIntervention').value;
-            let detail = document.getElementById('detailIntervention').value;
-            let debut = document.getElementById('debutIntervention').value;
-            let fin = document.getElementById('finIntervention').value;
+        function actualiserFiltre() {
+            // 1. Mettre à jour la liste textuelle
+            let tbody = document.getElementById('liste-indispos');
+            tbody.innerHTML = '';
+            indisponibilites.sort((a,b) => a.start - b.start).forEach(ind => {
+                tbody.innerHTML += `<tr>
+                    <td><strong>${ind.titre}</strong></td>
+                    <td>${minsToTime(ind.start)} à ${minsToTime(ind.end)}</td>
+                    <td><button class="btn-delete" onclick="supprimerIndispo(${ind.id})">Supprimer</button></td>
+                </tr>`;
+            });
 
-            if (!ecole_id || !detail || !debut || !fin) return afficherNotification("Tous les champs sont requis pour valider le cours.");
-            if (timeToMins(debut) >= timeToMins(fin)) return afficherNotification("Horaires invalides.");
+            // 2. Mettre à jour la ligne de temps (Calcul Inversé)
+            let timeline = document.getElementById('timeline');
+            timeline.innerHTML = '';
 
-            db.interventions.push({ id: Date.now(), ecole_id: ecole_id, jour: jour, detail: detail, debut: debut, fin: fin });
+            // A) Dessiner les blocs rouges (Indisponibilités)
+            indisponibilites.forEach(ind => {
+                let left = calcPct(ind.start);
+                let width = calcPct(ind.end) - left;
+                timeline.innerHTML += `<div class="block red" style="left: ${left}%; width: ${width}%;" title="${ind.titre}">${ind.titre}</div>`;
+            });
 
-            document.getElementById('detailIntervention').value = '';
-            sauvegarderBaseDeDonnees();
-            afficherNotification("Votre cours a bien été planifié.");
-        }
-
-        function supprimerIntervention(id) {
-            db.interventions = db.interventions.filter(x => x.id !== id);
-            sauvegarderBaseDeDonnees();
-            afficherNotification("Le cours a été annulé.");
-        }
-
-        // ==========================================
-        // LE MOTEUR MATHEMATIQUE (Calcul des créneaux)
-        // ==========================================
-        function calculerDisposEcoleJour(ecole_id, jour) {
-            let blocsLibres = JSON.parse(JSON.stringify(HORAIRES_ECOLE)); 
+            // B) Calculer et dessiner les blocs verts (Créneaux Libres)
+            let creneauxLibres = [{ s: DEBUT_JOURNEE, e: FIN_JOURNEE }];
             
-            let blocagesDuJour = db.indispos.filter(i => 
-                i.jour === jour && (i.ecole_id == ecole_id || i.type === 'trajet' || i.type === 'pause')
-            );
-
-            blocagesDuJour.forEach(blocage => {
-                let startB = timeToMins(blocage.debut);
-                let endB = timeToMins(blocage.fin);
-                let nouveauxBlocsLibres = [];
-                
-                let currentLibres = blocsLibres;
-                currentLibres.forEach(libre => {
-                    if (endB <= libre.debut || startB >= libre.fin) {
-                        nouveauxBlocsLibres.push(libre);
+            indisponibilites.forEach(ind => {
+                let nouveauxLibres = [];
+                creneauxLibres.forEach(libre => {
+                    if (ind.end <= libre.s || ind.start >= libre.e) {
+                        nouveauxLibres.push(libre); // Pas de collision
                     } else {
-                        if (startB > libre.debut) {
-                            nouveauxBlocsLibres.push({ debut: libre.debut, fin: startB });
-                        }
-                        if (endB < libre.fin) {
-                            nouveauxBlocsLibres.push({ debut: endB, fin: libre.fin });
-                        }
+                        if (ind.start > libre.s) nouveauxLibres.push({ s: libre.s, e: ind.start });
+                        if (ind.end < libre.e) nouveauxLibres.push({ s: ind.end, e: libre.e });
                     }
                 });
-                blocsLibres = nouveauxBlocsLibres;
+                creneauxLibres = nouveauxLibres;
             });
 
-            return blocsLibres;
+            creneauxLibres.forEach(libre => {
+                let left = calcPct(libre.s);
+                let width = calcPct(libre.e) - left;
+                timeline.innerHTML += `<div class="block green" style="left: ${left}%; width: ${width}%;">LIBRE (${minsToTime(libre.s)} - ${minsToTime(libre.e)})</div>`;
+            });
         }
 
         // ==========================================
-        // RAFRAÎCHISSEMENT DE TOUTES LES VUES HTML
+        // MOTEUR FINANCIER (TRAJETS)
         // ==========================================
-        function rafraichirToutesLesVues() {
+        function ajouterTrajet() {
+            let nom = document.getElementById('trajetNom').value;
+            let dist = parseFloat(document.getElementById('trajetDistance').value);
+
+            if(!nom || isNaN(dist)) return alert("Remplissez le nom et la distance.");
+
+            trajets.push({ id: Date.now(), nom: nom, distance: dist });
+            document.getElementById('trajetNom').value = '';
+            document.getElementById('trajetDistance').value = '';
             
-            // --- 1. BILAN FINANCIER ---
+            actualiserFinancier();
+        }
+
+        function supprimerTrajet(id) {
+            trajets = trajets.filter(t => t.id !== id);
+            actualiserFinancier();
+        }
+
+        function calculerFrais() {
+            actualiserFinancier();
+        }
+
+        function actualiserFinancier() {
+            let bareme = parseFloat(document.getElementById('baremePrix').value) || 0;
             let totalKm = 0;
-            db.indispos.forEach(i => {
-                if(i.type === 'trajet') totalKm += (i.distance || 0);
-            });
-            let totalFrais = totalKm * (db.ik_rate || 0);
-            
-            if (document.getElementById('affichage-total-km')) {
-                document.getElementById('affichage-total-km').textContent = totalKm + " km enregistrés cette semaine";
-                document.getElementById('affichage-total-frais').textContent = totalFrais.toFixed(2) + " €";
-            }
 
-            // --- 2. LISTES DES ÉCOLES ---
-            let ulLieux = document.getElementById('liste-lieux'); 
-            if (ulLieux) ulLieux.innerHTML = '';
+            let tbody = document.getElementById('liste-trajets');
+            tbody.innerHTML = '';
             
-            let optionsEcoles = '<option value="">-- Sélectionnez un établissement --</option>';
-            
-            db.lieux.forEach(l => {
-                if (ulLieux) {
-                    ulLieux.innerHTML += `<li class="data-item">
-                        <div><strong style="color:${l.couleur}">${l.nom}</strong> <span style="font-size:0.85rem; color:var(--text-muted);">(${l.secteur})</span></div>
-                        <button class="btn-danger" onclick="supprimerLieu(${l.id})">Retirer</button>
-                    </li>`;
-                }
-                optionsEcoles += `<option value="${l.id}">${l.nom}</option>`;
+            trajets.forEach(t => {
+                totalKm += t.distance;
+                tbody.innerHTML += `<tr>
+                    <td><strong>${t.nom}</strong></td>
+                    <td>${t.distance} km</td>
+                    <td><button class="btn-delete" onclick="supprimerTrajet(${t.id})">Supprimer</button></td>
+                </tr>`;
             });
 
-            if (document.getElementById('ecoleIndispo')) document.getElementById('ecoleIndispo').innerHTML = optionsEcoles;
-            if (document.getElementById('ecoleIntervention')) document.getElementById('ecoleIntervention').innerHTML = optionsEcoles;
+            let totalEuro = totalKm * bareme;
 
-            // --- 3. BROUILLON (Indispos) ---
-            let ulIndispos = document.getElementById('liste-indispos'); 
-            if (ulIndispos) {
-                ulIndispos.innerHTML = '';
-                let indisposTriees = [...db.indispos].sort((a,b) => timeToMins(a.debut) - timeToMins(b.debut));
-                
-                indisposTriees.forEach(i => {
-                    let ecole = db.lieux.find(e => e.id == i.ecole_id);
-                    let nomEcole = ecole ? ecole.nom : 'Affectation Globale';
-                    let tag = i.type === 'trajet' ? 'TRAJET' : (i.type === 'pause' ? 'PAUSE' : 'CONTRAINTE');
-                    let infoKm = i.type === 'trajet' && i.distance ? ` (${i.distance} km)` : '';
-                    
-                    ulIndispos.innerHTML += `<li class="data-item">
-                        <div class="li-info">
-                            <span class="p-tag">${tag}</span> <strong>${i.jour}</strong> : ${i.debut} - ${i.fin} <br> 
-                            <div class="li-desc">${i.motif} à ${nomEcole}${infoKm}</div>
-                        </div>
-                        <button class="btn-danger" onclick="supprimerIndispo(${i.id})">Effacer</button>
-                    </li>`;
-                });
-            }
-
-            // --- 4. LISTE DES INTERVENTIONS ---
-            let ulInterventions = document.getElementById('liste-interventions');
-            if (ulInterventions) {
-                ulInterventions.innerHTML = '';
-                let intersTriees = [...db.interventions].sort((a,b) => timeToMins(a.debut) - timeToMins(b.debut));
-                
-                intersTriees.forEach(inter => {
-                    let ecole = db.lieux.find(e => e.id == inter.ecole_id);
-                    let nomEcole = ecole ? ecole.nom : 'Lieu inconnu';
-                    let couleur = ecole ? ecole.couleur : '#0f172a';
-                    
-                    ulInterventions.innerHTML += `<li class="data-item">
-                        <div class="li-info">
-                            <strong style="color:${couleur}">${nomEcole}</strong> - <strong>${inter.jour}</strong> (${inter.debut} à ${inter.fin}) <br> 
-                            <div class="li-desc">${inter.detail}</div>
-                        </div>
-                        <button class="btn-danger" onclick="supprimerIntervention(${inter.id})">Annuler</button>
-                    </li>`;
-                });
-            }
-
-            // --- 5. GÉNÉRATION DE LA MATRICE (Le tableau des créneaux) ---
-            let conteneurMatrice = document.getElementById('matrice-container');
-            if (conteneurMatrice) {
-                let htmlMatrice = `<table class="doc-table"><tr><th>Réseau d'Écoles</th>`;
-                JOURS_TRAVAIL.forEach(j => htmlMatrice += `<th>${j}</th>`);
-                htmlMatrice += `</tr>`;
-
-                db.lieux.forEach(ecole => {
-                    htmlMatrice += `<tr><td class="school-row-header" style="color:${ecole.couleur}">${ecole.nom}</td>`;
-                    JOURS_TRAVAIL.forEach(jour => {
-                        let dispos = calculerDisposEcoleJour(ecole.id, jour);
-                        let htmlCell = "";
-                        
-                        if (dispos.length === 0) {
-                            htmlCell = `<span style="color:#94a3b8; font-style:italic; font-size:0.8rem;">Aucune fenêtre de tir</span>`;
-                        } else {
-                            dispos.forEach(d => {
-                                htmlCell += `<div class="slot-libre">${minsToTime(d.debut)} - ${minsToTime(d.fin)}</div>`;
-                            });
-                        }
-                        htmlMatrice += `<td>${htmlCell}</td>`;
-                    });
-                    htmlMatrice += `</tr>`;
-                });
-                htmlMatrice += `</table>`;
-                
-                conteneurMatrice.innerHTML = db.lieux.length > 0 ? htmlMatrice : "<p style='color:var(--text-muted);'>Commencez par ajouter des établissements à votre réseau.</p>";
-            }
-
-            // --- 6. GÉNÉRATION DU PLANNING FINAL (Export) ---
-            genererPlanningFinal();
+            document.getElementById('total-km').textContent = totalKm.toFixed(1);
+            document.getElementById('total-euro').textContent = totalEuro.toFixed(2) + " €";
         }
 
-        // ==========================================
-        // GÉNÉRATEUR DU PLANNING FINAL (Thèmes)
-        // ==========================================
-        function genererPlanningFinal() {
-            let zoneResultat = document.getElementById('resultat-generation');
-            if (!zoneResultat) return;
-
-            let htmlFinal = "";
-
-            let eventsAafficher = db.interventions.map(inter => {
-                let ecole = db.lieux.find(e => e.id == inter.ecole_id);
-                return {
-                    jour: inter.jour,
-                    heure_debut: inter.debut,
-                    heure_fin: inter.fin,
-                    titre: inter.detail,
-                    nom_ecole: ecole ? ecole.nom : 'Inconnu',
-                    couleur: ecole ? ecole.couleur : '#3b82f6',
-                    sMin: timeToMins(inter.debut),
-                    eMin: timeToMins(inter.fin)
-                };
-            });
-
-            eventsAafficher.sort((a,b) => a.sMin - b.sMin);
-
-            // -- THÈME 1 : AGENDA PRO --
-            if(db.theme === 'agenda') {
-                htmlFinal += `<div class="ag-wrap"><div class="ag-head"><div style="width:50px"></div>${JOURS_TRAVAIL.map(j => `<div class="ag-day">${j}</div>`).join('')}</div>
-                    <div class="ag-body"><div class="ag-axis">`;
-                for(let h=8; h<=17; h++) htmlFinal += `<div class="ag-time" style="top:${(h-8)*60 + 25}px">${h}h00</div>`;
-                htmlFinal += `</div>`;
-                
-                JOURS_TRAVAIL.forEach(jour => {
-                    htmlFinal += `<div class="ag-col">`;
-                    for(let h=8; h<=17; h++) htmlFinal += `<div class="ag-line" style="top:${(h-8)*60 + 25}px"></div>`;
-                    
-                    let evtsJour = eventsAafficher.filter(e => e.jour === jour);
-                    
-                    let colonnes = [];
-                    evtsJour.forEach(e => {
-                        let place = false;
-                        for(let i=0; i<colonnes.length; i++) {
-                            if(e.sMin >= colonnes[i][colonnes[i].length-1].eMin) { colonnes[i].push(e); e.col = i; place = true; break; }
-                        }
-                        if(!place) { e.col = colonnes.length; colonnes.push([e]); }
-                    });
-                    let nbCols = colonnes.length || 1;
-
-                    evtsJour.forEach(e => {
-                        let offsetTop = (e.sMin - (8 * 60)) + 25; 
-                        let hauteurBloc = e.eMin - e.sMin;
-                        let leftPos = (e.col / nbCols) * 100;
-                        let widthPct = 100 / nbCols;
-
-                        htmlFinal += `
-                        <div class="ag-block" style="top:${offsetTop}px; height:${hauteurBloc}px; left: calc(${leftPos}% + 2px); width: calc(${widthPct}% - 4px); border-left-color:${e.couleur}; background:${e.couleur}15; border-top: 1px solid ${e.couleur}40; border-right: 1px solid ${e.couleur}40; border-bottom: 1px solid ${e.couleur}40; border-left: 5px solid ${e.couleur};">
-                            <div class="p-time" style="color:${e.couleur}">${e.heure_debut} - ${e.heure_fin}</div>
-                            <div class="p-tit" style="color:${e.couleur}"><strong style="text-transform:uppercase;">${e.nom_ecole}</strong><br>${e.titre}</div>
-                        </div>`;
-                    });
-                    htmlFinal += `</div>`;
-                });
-                htmlFinal += `</div></div>`;
-            } 
-            
-            // -- THÈME 2 : KANBAN --
-            else if(db.theme === 'kanban') {
-                htmlFinal += `<div class="kb-wrap">`;
-                JOURS_TRAVAIL.forEach(jour => {
-                    htmlFinal += `<div class="kb-col"><div class="kb-head">${jour}</div>`;
-                    let evtsJour = eventsAafficher.filter(e => e.jour === jour);
-                    if(evtsJour.length === 0) htmlFinal += `<div style="text-align:center; color:var(--text-muted); font-size:0.85rem; padding-top:20px;">Aucune intervention</div>`;
-                    evtsJour.forEach(e => {
-                        htmlFinal += `
-                        <div class="kb-card" style="border-top: 4px solid ${e.couleur}">
-                            <div style="font-size:0.75rem; font-weight:800; color:${e.couleur}; background:${e.couleur}15; display:inline-block; padding:4px 8px; border-radius:4px; margin-bottom:8px;">${e.heure_debut} - ${e.heure_fin}</div>
-                            <div class="p-tit" style="color:var(--text-main)"><strong style="color:${e.couleur}">${e.nom_ecole}</strong><br>${e.titre}</div>
-                        </div>`;
-                    });
-                    htmlFinal += `</div>`;
-                });
-                htmlFinal += `</div>`;
-            }
-            
-            // -- THÈME 3 : LISTE (NOTION) --
-            else if(db.theme === 'liste') {
-                htmlFinal += `<div class="li-wrap">`;
-                let aDesEvents = false;
-                JOURS_TRAVAIL.forEach(jour => {
-                    let evtsJour = eventsAafficher.filter(e => e.jour === jour);
-                    if(evtsJour.length > 0) {
-                        aDesEvents = true;
-                        htmlFinal += `<div class="li-group"><div class="li-title">${jour}</div>`;
-                        evtsJour.forEach(e => {
-                            htmlFinal += `
-                            <div class="li-row">
-                                <div style="font-weight:700; width:120px; color:var(--text-muted); font-size:0.9rem;">${e.heure_debut} - ${e.heure_fin}</div>
-                                <div class="li-dot" style="background:${e.couleur}"></div>
-                                <div style="flex:1; font-weight:700; color:var(--primary); display:flex; align-items:center;">
-                                    <span class="p-tag" style="background:${e.couleur}20; color:${e.couleur}; border: 1px solid ${e.couleur}50;">${e.nom_ecole}</span> ${e.titre}
-                                </div>
-                            </div>`;
-                        });
-                        htmlFinal += `</div>`;
-                    }
-                });
-                if(!aDesEvents) htmlFinal += `<div style="text-align:center; color:var(--text-muted); padding: 40px;">Semaine vide.</div>`;
-                htmlFinal += `</div>`;
-            }
-            
-            // -- THÈME 4 : AESTHETIC --
-            else if(db.theme === 'aesthetic') {
-                htmlFinal += `<div class="aes-wrap">`;
-                JOURS_TRAVAIL.forEach(jour => {
-                    htmlFinal += `<div class="aes-col"><div class="aes-head">${jour}</div>`;
-                    let evtsJour = eventsAafficher.filter(e => e.jour === jour);
-                    evtsJour.forEach(e => {
-                        htmlFinal += `
-                        <div class="aes-blob" style="background:${e.couleur}15; border: 1px solid ${e.couleur}40;">
-                            <div class="p-time" style="color:${e.couleur}">${e.heure_debut} - ${e.heure_fin}</div>
-                            <div class="p-tit" style="color:${e.couleur}; font-size:1.05rem;">
-                                <strong style="font-size:1.1rem; display:block; margin-bottom:4px;">${e.nom_ecole}</strong>
-                                ${e.titre}
-                            </div>
-                        </div>`;
-                    });
-                    htmlFinal += `</div>`;
-                });
-                htmlFinal += `</div>`;
-            }
-            
-            // -- THÈME 5 : TIMELINE --
-            else if(db.theme === 'timeline') {
-                htmlFinal += `<div class="tl-wrap">`;
-                let totalMin = 9 * 60; // 08h00 à 17h00 = 9h
-                JOURS_TRAVAIL.forEach(jour => {
-                    let evtsJour = eventsAafficher.filter(e => e.jour === jour);
-                    
-                    let cols = [];
-                    evtsJour.forEach(e => {
-                        let place = false;
-                        for(let i=0; i<cols.length; i++) {
-                            if(e.sMin >= cols[i][cols[i].length-1].eMin) { cols[i].push(e); e.col = i; place = true; break; }
-                        }
-                        if(!place) { e.col = cols.length; cols.push([e]); }
-                    });
-                    let nbCols = cols.length || 1;
-                    let heightRow = Math.max(80, 20 + nbCols * 45);
-
-                    htmlFinal += `<div class="tl-row" style="min-height:${heightRow}px;"><div class="tl-day">${jour}</div><div class="tl-track">`;
-                    for(let i=1; i<9; i++) htmlFinal += `<div class="tl-grid" style="left:${(i/9)*100}%"></div>`;
-                    
-                    evtsJour.forEach(e => {
-                        let s = e.sMin - (8 * 60); 
-                        let d = e.eMin - e.sMin;
-                        let topP = 15 + e.col * 45;
-                        
-                        htmlFinal += `
-                        <div class="tl-bar" style="left:${(s/totalMin)*100}%; width:${(d/totalMin)*100}%; background:${e.couleur}; color:white; top:${topP}px; display:flex; flex-direction:column; justify-content:center;">
-                            <div style="font-weight:900; font-size:0.85rem; letter-spacing:0.5px;">${e.nom_ecole}</div>
-                            <div style="font-size:0.75rem; opacity:0.9;">${e.heure_debut}-${e.heure_fin} | ${e.titre}</div>
-                        </div>`;
-                    });
-                    htmlFinal += `</div></div>`;
-                });
-                htmlFinal += `</div>`;
-            }
-            
-            zoneResultat.innerHTML = htmlFinal;
-        }
-
-        // ==========================================
-        // EXPORTATION PDF
-        // ==========================================
-        function exporterPDF() {
-            const element = document.getElementById('zone-impression-pdf');
-            const orientation = (db.theme === 'timeline' || db.theme === 'kanban') ? 'landscape' : 'portrait';
-            
-            html2pdf().set({
-                margin: 10, 
-                filename: 'Mon_Planning_Definitif.pdf', 
-                image: {type:'jpeg', quality:0.98}, 
-                html2canvas: {scale:2}, 
-                jsPDF: {unit:'mm', format:'a4', orientation: orientation}
-            }).from(element).save();
-        }
-
-        // Initialisation de l'application
-        actualiserVues();
+        // Initialisation de la vue par défaut
+        actualiserFiltre();
+        actualiserFinancier();
 
     </script>
 </body>
